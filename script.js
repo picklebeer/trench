@@ -367,7 +367,7 @@ document.addEventListener("DOMContentLoaded", () => {
       "img/Character - Shiba.png",
     ];
 
-    const spawnDuration = 1500; // 1.5 seconds to spawn all characters
+    // Spawn each character individually with delay between them
     resistanceImages.forEach((imgSrc, i) => {
       setTimeout(
         () => {
@@ -405,8 +405,8 @@ document.addEventListener("DOMContentLoaded", () => {
             character.classList.add("spawn");
           }, 50);
         },
-        (i / resistanceImages.length) * spawnDuration + 5500,
-      ); // Start after tank entrance completes (3.5s + 2s tank animation)
+        5500 + i * 300,
+      ); // Start after tank (5.5s), 300ms delay between each character
     });
   }
 
