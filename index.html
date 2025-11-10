@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>TRENCH - The Battlefield Token</title>
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+        <!-- Mission Loading Screen -->
+        <div id="loading-screen" class="loading-screen">
+            <div class="loading-container">
+                <div class="mission-text">
+                    <h1 class="glitch" data-text="MISSION LOADING">
+                        MISSION LOADING
+                    </h1>
+                </div>
+                <div class="loading-bar-container">
+                    <div class="loading-bar"></div>
+                </div>
+                <div class="loading-percentage">0%</div>
+                <div class="mission-details">
+                    <p class="typewriter">OBJECTIVE: SECURE THE TRENCHES</p>
+                    <p class="typewriter delay-1">LOCATION: SOUTH SOLANA SEA</p>
+                    <p class="typewriter delay-2">STATUS: DEPLOYED...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Missile Transition (viewport-fixed, outside main content) -->
+        <div id="missile-container" class="missile-container">
+            <img
+                src="img/Aux - Missile.png"
+                alt="Missile"
+                class="missile"
+                id="missile"
+            />
+            <!-- Explosion at bottom-right (missile flying down) -->
+            <img
+                src="img/Aux - Explosion.png"
+                alt="Explosion"
+                class="missile-explosion bottom-right"
+                id="explosion-bottom-right"
+            />
+            <!-- Explosion at top-left (missile flying up) -->
+            <img
+                src="img/Aux - Explosion.png"
+                alt="Explosion"
+                class="missile-explosion top-left"
+                id="explosion-top-left"
+            />
+        </div>
+
+        <!-- Main Content -->
+        <div id="main-content" class="main-content hidden">
+            <!-- Hero Section with Warfield -->
+            <section id="hero" class="hero-section">
+                <div class="warfield-background"></div>
+                <div class="hero-overlay"></div>
+                <div class="hero-content">
+                    <div class="logo-explosion-container">
+                        <img
+                            src="img/Aux - Explosion.png"
+                            alt="Explosion"
+                            class="explosion-reveal"
+                        />
+                        <img
+                            src="img/Logo - Text Logo.png"
+                            alt="TRENCH"
+                            class="main-logo explosion-fade-in"
+                        />
+                    </div>
+                    <img
+                        src="img/Logo - Coin with Parachute NoBG.png"
+                        alt="TRENCH Coin"
+                        class="coin-logo parachute-drop"
+                    />
+                    <h2 class="tagline fade-in-up">
+                        HOLD THE LINE. DEFEND THE TRENCHES.
+                    </h2>
+                </div>
+            </section>
+
+            <!-- Section 1: The Jeets have been multiplying -->
+            <section id="scroll-section-1" class="scroll-section section-jeets">
+                <div class="section-content">
+                    <h2 class="section-title">
+                        THE JEETS HAVE BEEN MULTIPLYING
+                    </h2>
+                    <p class="section-description">
+                        An endless wave of paper hands threatens the trenches
+                    </p>
+                </div>
+            </section>
+
+            <!-- Section 2: The Resistance has been struggling to hold down the fort -->
+            <section
+                id="scroll-section-2"
+                class="scroll-section section-resistance"
+            >
+                <div class="section-content">
+                    <h2 class="section-title">
+                        THE RESISTANCE HAS BEEN STRUGGLING TO HOLD DOWN THE FORT
+                    </h2>
+                    <p class="section-description">
+                        Diamond hands stand firm against the tide
+                    </p>
+                </div>
+            </section>
+
+            <!-- Section 3: Only by defeating the Jeet army can we win -->
+            <section
+                id="scroll-section-3"
+                class="scroll-section section-defeat"
+            >
+                <div class="section-content">
+                    <h2 class="section-title">
+                        ONLY BY DEFEATING THE JEET ARMY CAN WE WIN
+                    </h2>
+                    <p class="section-description">
+                        Victory requires unwavering conviction
+                    </p>
+                </div>
+            </section>
+
+            <!-- Section 4: There is only one way -->
+            <section
+                id="scroll-section-4"
+                class="scroll-section section-oneway"
+            >
+                <div class="section-content">
+                    <h2 class="section-title">THERE IS ONLY ONE WAY</h2>
+                    <p class="section-description">The path forward is clear</p>
+                </div>
+            </section>
+
+            <!-- Section 5: Buy $TRENCH -->
+            <section id="scroll-section-5" class="scroll-section section-buy">
+                <div class="section-content">
+                    <h2 class="section-title">BUY $TRENCH</h2>
+                    <p class="section-description">
+                        Join the resistance. Hold the line.
+                    </p>
+                    <div class="cta-container">
+                        <button class="cta-button">BUY NOW</button>
+                        <button class="cta-button secondary">LEARN MORE</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <script src="script.js"></script>
+    </body>
+</html>
