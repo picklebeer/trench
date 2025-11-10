@@ -6,29 +6,52 @@ document.addEventListener("DOMContentLoaded", () => {
   const backgroundMusic = document.getElementById("background-music");
 
   // Attempt to play background music on user interaction
+  let musicStarted = false;
+
   const playMusic = () => {
-    if (backgroundMusic) {
+    if (backgroundMusic && !musicStarted) {
       backgroundMusic.volume = 0.3; // Set volume to 30%
-      backgroundMusic.play().catch((error) => {
-        console.log("Autoplay prevented, waiting for user interaction:", error);
-      });
+      backgroundMusic
+        .play()
+        .then(() => {
+          musicStarted = true;
+          // Remove event listeners once music starts
+          document.removeEventListener("click", enableAudioOnInteraction);
+          document.removeEventListener("keydown", enableAudioOnInteraction);
+          document.removeEventListener("touchstart", enableAudioOnInteraction);
+        })
+        .catch(() => {
+          // Silently fail - music will play on user interaction
+        });
     }
   };
-
-  // Try to play music immediately
-  playMusic();
 
   // If autoplay is blocked, play on first user interaction
   const enableAudioOnInteraction = () => {
     playMusic();
-    document.removeEventListener("click", enableAudioOnInteraction);
-    document.removeEventListener("keydown", enableAudioOnInteraction);
-    document.removeEventListener("touchstart", enableAudioOnInteraction);
   };
 
-  document.addEventListener("click", enableAudioOnInteraction);
-  document.addEventListener("keydown", enableAudioOnInteraction);
-  document.addEventListener("touchstart", enableAudioOnInteraction);
+  // Try to play music after a short delay (attempt to bypass autoplay restrictions)
+  setTimeout(() => {
+    playMusic();
+  }, 100);
+
+  // Set up listeners for user interaction
+  document.addEventListener("click", enableAudioOnInteraction, { once: false });
+  document.addEventListener("keydown", enableAudioOnInteraction, {
+    once: false,
+  });
+  document.addEventListener("touchstart", enableAudioOnInteraction, {
+    once: false,
+  });
+  document.addEventListener("scroll", enableAudioOnInteraction, {
+    once: false,
+  });
+  document.addEventListener("wheel", enableAudioOnInteraction, { once: false });
+  document.addEventListener("drag", enableAudioOnInteraction, { once: false });
+  document.addEventListener("mousemove", enableAudioOnInteraction, {
+    once: false,
+  });
 
   // Check if elements exist
   if (!loadingPercentage) {
