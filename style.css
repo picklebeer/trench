@@ -1089,7 +1089,7 @@ body {
 
 .resistance-character {
     position: absolute;
-    width: 70px;
+    width: 140px;
     height: auto;
     opacity: 0;
     filter: drop-shadow(0 0 10px rgba(107, 168, 58, 0.5));
