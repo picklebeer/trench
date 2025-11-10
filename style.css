@@ -875,7 +875,13 @@ body {
 
 /* Section 1: Jeets Animation */
 .section-1-text {
-    animation: fadeOutText 2s ease-out 2s forwards;
+    opacity: 1;
+    z-index: 20;
+    position: relative;
+}
+
+.section-1-text.fade-out {
+    animation: fadeOutText 2s ease-out forwards;
 }
 
 @keyframes fadeOutText {
@@ -895,7 +901,11 @@ body {
     width: 100%;
     height: 100%;
     opacity: 0;
-    animation: fadeInAnimation 1s ease-in 4s forwards;
+    z-index: 10;
+}
+
+.jeets-animation-container.active {
+    animation: fadeInAnimation 1s ease-in forwards;
 }
 
 @keyframes fadeInAnimation {

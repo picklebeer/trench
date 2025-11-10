@@ -183,21 +183,42 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Section 1: Jeets Animation
-  function initSection1Animation() {
+  let section1Triggered = false;
+
+  function startSection1Animation() {
+    if (section1Triggered) return;
+    section1Triggered = true;
+
     const section1 = document.getElementById("scroll-section-1");
+    const textElement = section1.querySelector(".section-1-text");
+    const animationContainer = section1.querySelector(
+      ".jeets-animation-container",
+    );
     const candlesContainer = section1.querySelector(".red-candles-container");
     const jeetsContainer = section1.querySelector(".jeets-container");
 
+    // Step 1: Show text for 2 seconds
+    setTimeout(() => {
+      textElement.classList.add("fade-out");
+    }, 2000);
+
+    // Step 2: Start animation container fade in
+    setTimeout(() => {
+      animationContainer.classList.add("active");
+    }, 4000);
+
     // Generate 15 red candles with varying heights
     const numCandles = 15;
-    for (let i = 0; i < numCandles; i++) {
-      const candle = document.createElement("div");
-      candle.className = "red-candle";
-      const height = Math.random() * 200 + 100; // Random height between 100-300px
-      candle.style.height = `${height}px`;
-      candle.style.animationDelay = `${i * 0.1}s`;
-      candlesContainer.appendChild(candle);
-    }
+    setTimeout(() => {
+      for (let i = 0; i < numCandles; i++) {
+        const candle = document.createElement("div");
+        candle.className = "red-candle";
+        const height = Math.random() * 200 + 100; // Random height between 100-300px
+        candle.style.height = `${height}px`;
+        candle.style.animationDelay = `${i * 0.1}s`;
+        candlesContainer.appendChild(candle);
+      }
+    }, 4000);
 
     // Spawn 30 Jeets over 2 seconds
     const numJeets = 30;
@@ -212,9 +233,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
           // Random position based on candle locations
           const candleIndex = Math.floor(Math.random() * numCandles);
-          const candle = candlesContainer.children[candleIndex];
-          const candleRect = candle.getBoundingClientRect();
-          const containerRect = jeetsContainer.getBoundingClientRect();
 
           // Position jeet near a candle
           const left =
@@ -232,11 +250,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Initialize Section 1 animation when page loads
-  setTimeout(() => {
-    initSection1Animation();
-  }, 1000);
-
   // Scroll-triggered animations (to be expanded)
   const observerOptions = {
     threshold: 0.1,
@@ -247,6 +260,11 @@ document.addEventListener("DOMContentLoaded", () => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
         entry.target.classList.add("animate-in");
+
+        // Trigger Section 1 animation when it comes into view
+        if (entry.target.id === "scroll-section-1") {
+          startSection1Animation();
+        }
       }
     });
   }, observerOptions);
