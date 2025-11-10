@@ -256,6 +256,116 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // Section 2: Resistance Animation
+  let section2Triggered = false;
+
+  function startSection2Animation() {
+    if (section2Triggered) return;
+    section2Triggered = true;
+
+    const section2 = document.getElementById("scroll-section-2");
+    const textElement = section2.querySelector(".section-2-text");
+    const animationContainer = section2.querySelector(
+      ".resistance-animation-container",
+    );
+    const tankContainer = section2.querySelector(".tank-container");
+    const landminesContainer = section2.querySelector(".landmines-container");
+    const resistanceContainer = section2.querySelector(
+      ".resistance-characters-container",
+    );
+
+    // Step 1: Show text for 2 seconds
+    setTimeout(() => {
+      textElement.classList.add("fade-out");
+    }, 2000);
+
+    // Step 2: Start animation container fade in (after 0.5s fade out)
+    setTimeout(() => {
+      animationContainer.classList.add("active");
+    }, 2500);
+
+    // Step 3: Add tank and trigger entrance
+    setTimeout(() => {
+      const tank = document.createElement("img");
+      tank.src = "img/Character - Tank.png";
+      tank.alt = "Tank";
+      tankContainer.appendChild(tank);
+
+      // Trigger tank entrance animation
+      setTimeout(() => {
+        tankContainer.classList.add("enter");
+      }, 50);
+    }, 2500);
+
+    // Step 4: Place landmines first (before characters spawn)
+    setTimeout(() => {
+      const numLandmines = 12;
+      for (let i = 0; i < numLandmines; i++) {
+        const landmine = document.createElement("img");
+        landmine.src = "img/Aux - Landmine.png";
+        landmine.className = "landmine";
+
+        // Scatter landmines across the middle and right portion of the screen
+        const left = 30 + Math.random() * 60; // 30% to 90% from left
+        const top = 20 + Math.random() * 60; // 20% to 80% from top
+
+        landmine.style.left = `${left}%`;
+        landmine.style.top = `${top}%`;
+
+        // Randomize animation delay for varied throbbing
+        landmine.style.animationDelay = `${Math.random() * 2}s`;
+
+        landminesContainer.appendChild(landmine);
+      }
+    }, 2500);
+
+    // Step 5: Spawn resistance characters
+    const resistanceImages = [
+      "img/Character - Catpop.png",
+      "img/Character - DogeWW1.png",
+      "img/Character - Dogwifhat.png",
+      "img/Character - Moodeng.png",
+      "img/Character - Pepe.png",
+      "img/Character - Wojak.png",
+      "img/Character - Soyjak.png",
+      "img/Character - Shiba.png",
+    ];
+
+    const spawnDuration = 1500; // 1.5 seconds to spawn all characters
+    resistanceImages.forEach((imgSrc, i) => {
+      setTimeout(
+        () => {
+          const character = document.createElement("img");
+          character.src = imgSrc;
+          character.className = "resistance-character";
+
+          // Position characters in a scattered formation
+          // Split into two rows: top and bottom half
+          const row = i < 4 ? "top" : "bottom";
+          const positionInRow = i % 4;
+
+          // Calculate horizontal position (spread across the right side)
+          const left = 35 + positionInRow * 15 + (Math.random() * 5 - 2.5);
+
+          // Calculate vertical position
+          const top =
+            row === "top" ? 25 + Math.random() * 15 : 55 + Math.random() * 15;
+
+          character.style.left = `${left}%`;
+          character.style.top = `${top}%`;
+
+          resistanceContainer.appendChild(character);
+
+          // Trigger spawn animation
+          setTimeout(() => {
+            character.classList.add("spawn");
+          }, 50);
+        },
+        (i / resistanceImages.length) * spawnDuration + 3000,
+      ); // Start after tank enters (2.5s + 500ms delay)
+    });
+  }
+
   // Scroll-triggered animations (to be expanded)
   const observerOptions = {
     threshold: 0.1,
@@ -270,6 +380,11 @@ document.addEventListener("DOMContentLoaded", () => {
         // Trigger Section 1 animation when it comes into view
         if (entry.target.id === "scroll-section-1") {
           startSection1Animation();
+        }
+
+        // Trigger Section 2 animation when it comes into view
+        if (entry.target.id === "scroll-section-2") {
+          startSection2Animation();
         }
       }
     });

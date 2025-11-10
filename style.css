@@ -995,6 +995,122 @@ body {
 
 .section-resistance {
     background: linear-gradient(135deg, #1f2d1f 0%, #1a1a1a 100%);
+    position: relative;
+}
+
+/* Section 2: Resistance Animation */
+.section-2-text {
+    opacity: 1;
+    z-index: 20;
+    position: relative;
+}
+
+.section-2-text.fade-out {
+    animation: fadeOutText 0.5s ease-out forwards;
+}
+
+.resistance-animation-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    z-index: 10;
+}
+
+.resistance-animation-container.active {
+    animation: fadeInAnimation 0.5s ease-in forwards;
+}
+
+.tank-container {
+    position: absolute;
+    left: -200px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.tank-container img {
+    width: 180px;
+    height: auto;
+    filter: drop-shadow(0 0 20px rgba(74, 124, 58, 0.6));
+}
+
+.tank-container.enter {
+    animation: tankEntrance 2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+@keyframes tankEntrance {
+    0% {
+        left: -200px;
+        opacity: 0.5;
+    }
+    100% {
+        left: 10%;
+        opacity: 1;
+    }
+}
+
+.landmines-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.landmine {
+    position: absolute;
+    width: 60px;
+    height: auto;
+    animation: landmineThrobbing 2s ease-in-out infinite;
+}
+
+@keyframes landmineThrobbing {
+    0%, 100% {
+        transform: scale(1);
+        filter: brightness(1) drop-shadow(0 0 10px rgba(255, 50, 50, 0.5));
+    }
+    50% {
+        transform: scale(1.15);
+        filter: brightness(1.3) drop-shadow(0 0 20px rgba(255, 50, 50, 0.8));
+    }
+}
+
+.resistance-characters-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.resistance-character {
+    position: absolute;
+    width: 70px;
+    height: auto;
+    opacity: 0;
+    filter: drop-shadow(0 0 10px rgba(107, 168, 58, 0.5));
+}
+
+.resistance-character.spawn {
+    animation: resistanceSpawn 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+@keyframes resistanceSpawn {
+    0% {
+        opacity: 0;
+        transform: scale(0.3) translateY(-30px);
+    }
+    50% {
+        transform: scale(1.1) translateY(5px);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
 }
 
 .section-defeat {
