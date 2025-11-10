@@ -298,6 +298,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 2500);
 
     // Step 4: Place landmines first (before characters spawn)
+    const landminePositions = [];
     setTimeout(() => {
       const numLandmines = 12;
       for (let i = 0; i < numLandmines; i++) {
@@ -312,12 +313,28 @@ document.addEventListener("DOMContentLoaded", () => {
         landmine.style.left = `${left}%`;
         landmine.style.top = `${top}%`;
 
+        // Store landmine position for collision detection
+        landminePositions.push({ left, top });
+
         // Randomize animation delay for varied throbbing
         landmine.style.animationDelay = `${Math.random() * 2}s`;
 
         landminesContainer.appendChild(landmine);
       }
     }, 2500);
+
+    // Helper function to check if position overlaps with landmines
+    function isPositionSafe(left, top, minDistance = 15) {
+      for (const landmine of landminePositions) {
+        const distance = Math.sqrt(
+          Math.pow(left - landmine.left, 2) + Math.pow(top - landmine.top, 2),
+        );
+        if (distance < minDistance) {
+          return false;
+        }
+      }
+      return true;
+    }
 
     // Step 5: Spawn resistance characters
     const resistanceImages = [
@@ -339,17 +356,25 @@ document.addEventListener("DOMContentLoaded", () => {
           character.src = imgSrc;
           character.className = "resistance-character";
 
-          // Position characters in a scattered formation
+          // Position characters in a scattered formation, avoiding landmines
           // Split into two rows: top and bottom half
           const row = i < 4 ? "top" : "bottom";
           const positionInRow = i % 4;
 
-          // Calculate horizontal position (spread across the right side)
-          const left = 35 + positionInRow * 15 + (Math.random() * 5 - 2.5);
+          // Try to find a safe position
+          let left,
+            top,
+            attempts = 0;
+          do {
+            // Calculate horizontal position (spread across the right side)
+            left = 35 + positionInRow * 15 + (Math.random() * 8 - 4);
 
-          // Calculate vertical position
-          const top =
-            row === "top" ? 25 + Math.random() * 15 : 55 + Math.random() * 15;
+            // Calculate vertical position
+            top =
+              row === "top" ? 25 + Math.random() * 15 : 55 + Math.random() * 15;
+
+            attempts++;
+          } while (!isPositionSafe(left, top) && attempts < 20);
 
           character.style.left = `${left}%`;
           character.style.top = `${top}%`;
