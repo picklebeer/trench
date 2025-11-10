@@ -1340,38 +1340,38 @@ body {
         width: 80px !important;
     }
 
-    /* Adjust resistance character positions for portrait (tighter spacing) */
+    /* Adjust resistance character positions for portrait (spread across full height) */
     .resistance-character:nth-child(1) {
         left: 10% !important;
-        top: 10% !important;
+        top: 8% !important;
     }
     .resistance-character:nth-child(2) {
         left: 25% !important;
-        top: 15% !important;
+        top: 18% !important;
     }
     .resistance-character:nth-child(3) {
         left: 40% !important;
-        top: 10% !important;
+        top: 28% !important;
     }
     .resistance-character:nth-child(4) {
         left: 55% !important;
-        top: 15% !important;
+        top: 38% !important;
     }
     .resistance-character:nth-child(5) {
         left: 10% !important;
-        top: 35% !important;
+        top: 48% !important;
     }
     .resistance-character:nth-child(6) {
         left: 25% !important;
-        top: 40% !important;
+        top: 58% !important;
     }
     .resistance-character:nth-child(7) {
         left: 40% !important;
-        top: 35% !important;
+        top: 68% !important;
     }
     .resistance-character:nth-child(8) {
         left: 55% !important;
-        top: 40% !important;
+        top: 78% !important;
     }
 
     /* Section 3: Scale barrage missiles */

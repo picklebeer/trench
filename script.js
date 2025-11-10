@@ -295,16 +295,16 @@ document.addEventListener("DOMContentLoaded", () => {
     // Define tank position (left: 5%, centered vertically at 50%)
     const tankPosition = { left: 5, top: 50 };
 
-    // Fixed positions for resistance characters (4 columns x 2 rows, more dispersed)
+    // Fixed positions for resistance characters (spread across full height)
     const characterFixedPositions = [
-      { left: 15, top: 15 }, // Catpop
-      { left: 30, top: 25 }, // DogeWW1
-      { left: 45, top: 15 }, // Dogwifhat
-      { left: 60, top: 25 }, // Moodeng
-      { left: 15, top: 45 }, // Pepe
-      { left: 30, top: 55 }, // Wojak
-      { left: 45, top: 45 }, // Soyjak
-      { left: 60, top: 55 }, // Shiba
+      { left: 15, top: 10 }, // Catpop
+      { left: 30, top: 20 }, // DogeWW1
+      { left: 45, top: 30 }, // Dogwifhat
+      { left: 60, top: 40 }, // Moodeng
+      { left: 15, top: 50 }, // Pepe
+      { left: 30, top: 60 }, // Wojak
+      { left: 45, top: 70 }, // Soyjak
+      { left: 60, top: 80 }, // Shiba
     ];
 
     // Fixed positions for landmines (avoiding tank and character positions, concentrated at bottom)
