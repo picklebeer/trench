@@ -284,8 +284,8 @@ document.addEventListener("DOMContentLoaded", () => {
       animationContainer.classList.add("active");
     }, 2500);
 
-    // Define tank position (left: 10%, centered vertically at 50%)
-    const tankPosition = { left: 10, top: 50 };
+    // Define tank position (left: 5%, centered vertically at 50%)
+    const tankPosition = { left: 5, top: 50 };
 
     // Helper function to check if position overlaps with tank
     function isTooCloseToTank(left, top, minDistance = 25) {
@@ -375,25 +375,18 @@ document.addEventListener("DOMContentLoaded", () => {
           character.src = imgSrc;
           character.className = "resistance-character";
 
-          // Position characters in a scattered formation, avoiding landmines
-          // Split into two rows: top and bottom half
-          const row = i < 4 ? "top" : "bottom";
-          const positionInRow = i % 4;
-
+          // Position characters randomly all over the screen, avoiding landmines
           // Try to find a safe position
           let left,
             top,
             attempts = 0;
           do {
-            // Calculate horizontal position (spread across the right side)
-            left = 35 + positionInRow * 15 + (Math.random() * 8 - 4);
-
-            // Calculate vertical position
-            top =
-              row === "top" ? 25 + Math.random() * 15 : 55 + Math.random() * 15;
+            // Spread characters across the entire screen
+            left = 20 + Math.random() * 70; // 20% to 90% from left
+            top = 15 + Math.random() * 70; // 15% to 85% from top
 
             attempts++;
-          } while (!isPositionSafe(left, top) && attempts < 20);
+          } while (!isPositionSafe(left, top) && attempts < 50);
 
           character.style.left = `${left}%`;
           character.style.top = `${top}%`;

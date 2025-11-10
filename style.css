@@ -1046,7 +1046,7 @@ body {
         opacity: 0.5;
     }
     100% {
-        left: 10%;
+        left: 5%;
         opacity: 1;
     }
 }
