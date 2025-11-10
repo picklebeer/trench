@@ -873,6 +873,66 @@ body {
     position: relative;
 }
 
+/* Top-left text box for all sections */
+.section-text-box {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    max-width: 400px;
+    background: rgba(0, 0, 0, 0.8);
+    border: 2px solid #4a7c3a;
+    border-radius: 8px;
+    padding: 20px;
+    z-index: 100;
+    opacity: 0;
+    transform: translateY(-20px);
+}
+
+.section-text-box.show {
+    animation: textBoxFadeIn 0.6s ease-out forwards;
+}
+
+@keyframes textBoxFadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.section-text-box h2 {
+    font-size: 1.8rem;
+    color: #4a7c3a;
+    margin-bottom: 10px;
+    text-shadow: 0 0 10px rgba(74, 124, 58, 0.6);
+}
+
+.section-text-box p {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #e0e0e0;
+}
+
+@media (max-width: 768px) and (orientation: portrait) {
+    .section-text-box {
+        top: 10px;
+        left: 10px;
+        max-width: calc(100% - 20px);
+        padding: 15px;
+    }
+
+    .section-text-box h2 {
+        font-size: 1.3rem;
+    }
+
+    .section-text-box p {
+        font-size: 0.9rem;
+    }
+}
+
 /* Section 1: Jeets Animation */
 .section-1-text {
     opacity: 1;
@@ -1165,42 +1225,21 @@ body {
 /* Section 3: Missile Barrage */
 .barrage-missile {
     position: absolute;
-    width: 8px;
-    height: 8px;
-    background: radial-gradient(circle, #ff6600 0%, #ff3300 50%, #cc0000 100%);
-    border-radius: 50%;
-    box-shadow:
-        0 0 15px rgba(255, 100, 0, 0.8),
-        0 0 30px rgba(255, 50, 0, 0.4);
     pointer-events: none;
     z-index: 100;
+    filter: drop-shadow(0 0 10px rgba(255, 100, 0, 0.8));
     animation: missileFly 0.8s linear forwards;
-}
-
-.barrage-missile::after {
-    content: "";
-    position: absolute;
-    width: 30px;
-    height: 3px;
-    background: linear-gradient(
-        90deg,
-        rgba(255, 150, 0, 0.8) 0%,
-        transparent 100%
-    );
-    filter: blur(2px);
-    left: -25px;
-    top: 50%;
-    transform: translateY(-50%);
 }
 
 @keyframes missileFly {
     0% {
-        transform: translate(0, 0) scale(1);
+        transform: translate(0, 0) rotate(var(--rotation));
         opacity: 1;
     }
     100% {
-        transform: translate(var(--target-x), var(--target-y)) scale(1.5);
-        opacity: 0.8;
+        transform: translate(var(--target-x), var(--target-y))
+            rotate(var(--rotation));
+        opacity: 1;
     }
 }
 
@@ -1227,6 +1266,49 @@ body {
 
 .section-oneway {
     background: linear-gradient(135deg, #1f1f2d 0%, #1a1a1a 100%);
+}
+
+/* Section 4: Arthur Diamond Hands */
+.arthur-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+}
+
+.arthur-container img {
+    max-width: 600px;
+    max-height: 80vh;
+    width: auto;
+    height: auto;
+    border-radius: 12px;
+    filter: drop-shadow(0 0 30px rgba(74, 124, 58, 0.8));
+    animation: arthurGlow 2s ease-in-out infinite;
+}
+
+.arthur-container.active {
+    animation: fadeInAnimation 1s ease-in forwards;
+}
+
+@keyframes arthurGlow {
+    0%,
+    100% {
+        filter: drop-shadow(0 0 30px rgba(74, 124, 58, 0.8));
+        transform: scale(1);
+    }
+    50% {
+        filter: drop-shadow(0 0 50px rgba(74, 124, 58, 1))
+            drop-shadow(0 0 80px rgba(74, 124, 58, 0.6));
+        transform: scale(1.02);
+    }
+}
+
+@media (max-width: 768px) and (orientation: portrait) {
+    .arthur-container img {
+        max-width: 90vw;
+        max-height: 60vh;
+    }
 }
 
 .section-buy {
@@ -1340,48 +1422,42 @@ body {
         width: 80px !important;
     }
 
-    /* Adjust resistance character positions for portrait (spread across full height) */
+    /* Adjust resistance character positions for portrait (concentrated left side) */
     .resistance-character:nth-child(1) {
-        left: 10% !important;
-        top: 8% !important;
+        left: 45% !important;
+        top: 15% !important;
     }
     .resistance-character:nth-child(2) {
-        left: 25% !important;
-        top: 18% !important;
+        left: 10% !important;
+        top: 15% !important;
     }
     .resistance-character:nth-child(3) {
-        left: 40% !important;
-        top: 28% !important;
+        left: 42% !important;
+        top: 25% !important;
     }
     .resistance-character:nth-child(4) {
-        left: 55% !important;
-        top: 38% !important;
+        left: 27% !important;
+        top: 10% !important;
     }
     .resistance-character:nth-child(5) {
-        left: 10% !important;
-        top: 48% !important;
-    }
-    .resistance-character:nth-child(6) {
-        left: 25% !important;
+        left: 45% !important;
         top: 58% !important;
     }
+    .resistance-character:nth-child(6) {
+        left: 20% !important;
+        top: 62% !important;
+    }
     .resistance-character:nth-child(7) {
-        left: 40% !important;
-        top: 68% !important;
+        left: 8% !important;
+        top: 75% !important;
     }
     .resistance-character:nth-child(8) {
-        left: 55% !important;
-        top: 78% !important;
+        left: 38% !important;
+        top: 88% !important;
     }
 
     /* Section 3: Scale barrage missiles */
     .barrage-missile {
-        width: 6px !important;
-        height: 6px !important;
-    }
-
-    .barrage-missile::after {
-        width: 20px !important;
-        left: -18px !important;
+        width: 60px !important;
     }
 }

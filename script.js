@@ -183,29 +183,26 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Section 1: Jeets Animation
-  let section1Triggered = false;
-
   function startSection1Animation() {
-    if (section1Triggered) return;
-    section1Triggered = true;
-
     const section1 = document.getElementById("scroll-section-1");
-    const textElement = section1.querySelector(".section-1-text");
+    const textBox = section1.querySelector(".section-text-box");
     const animationContainer = section1.querySelector(
       ".jeets-animation-container",
     );
     const candlesContainer = section1.querySelector(".red-candles-container");
     const jeetsContainer = section1.querySelector(".jeets-container");
 
-    // Step 1: Show text for 2 seconds
-    setTimeout(() => {
-      textElement.classList.add("fade-out");
-    }, 2000);
+    // Clear previous animation
+    candlesContainer.innerHTML = "";
+    jeetsContainer.innerHTML = "";
+    textBox.classList.remove("show");
+    animationContainer.classList.remove("active");
 
-    // Step 2: Start animation container fade in (after 0.5s fade out)
-    setTimeout(() => {
-      animationContainer.classList.add("active");
-    }, 2500);
+    // Show text box immediately
+    textBox.classList.add("show");
+
+    // Start animation container
+    animationContainer.classList.add("active");
 
     // Generate 15 red candles with exponential decay pattern (downward trend)
     const numCandles = 15;
@@ -224,7 +221,7 @@ document.addEventListener("DOMContentLoaded", () => {
         candle.style.animationDelay = `${i * 0.1}s`;
         candlesContainer.appendChild(candle);
       }
-    }, 2500);
+    }, 600); // Start shortly after text box appears
 
     // Spawn 100 Jeets over 2 seconds
     const numJeets = 100;
@@ -251,26 +248,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
           jeetsContainer.appendChild(jeet);
         },
-        (i / numJeets) * spawnDuration + 2500,
-      ); // Start after 2.5s (after text fades)
+        (i / numJeets) * spawnDuration + 600,
+      ); // Start with candles
     }
   }
 
   // Section 2: Resistance Animation
-  let section2Triggered = false;
-
   // Pre-defined positions for Section 2 (used in both Section 2 and Section 3)
   const section2Positions = {
     tank: { left: 5, top: 50 },
     resistanceCharacters: [
-      { left: 15, top: 10 }, // Catpop
-      { left: 30, top: 20 }, // DogeWW1
-      { left: 45, top: 30 }, // Dogwifhat
-      { left: 60, top: 40 }, // Moodeng
-      { left: 15, top: 50 }, // Pepe
-      { left: 30, top: 60 }, // Wojak
-      { left: 45, top: 70 }, // Soyjak
-      { left: 60, top: 80 }, // Shiba
+      { left: 45, top: 15 }, // Catpop - top center-left
+      { left: 10, top: 15 }, // DogeWW1 - top left
+      { left: 42, top: 25 }, // Dogwifhat - upper-mid left
+      { left: 27, top: 10 }, // Moodeng - top center (between Doge and Popcat, higher)
+      { left: 45, top: 58 }, // Pepe - mid center-left
+      { left: 20, top: 62 }, // Wojak - lower-mid left
+      { left: 8, top: 75 }, // Soyjak - lower left
+      { left: 38, top: 88 }, // Shiba - bottom center-left
     ],
     landmines: [
       { left: 55, top: 65 },
@@ -292,11 +287,8 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   function startSection2Animation() {
-    if (section2Triggered) return;
-    section2Triggered = true;
-
     const section2 = document.getElementById("scroll-section-2");
-    const textElement = section2.querySelector(".section-2-text");
+    const textBox = section2.querySelector(".section-text-box");
     const animationContainer = section2.querySelector(
       ".resistance-animation-container",
     );
@@ -305,21 +297,33 @@ document.addEventListener("DOMContentLoaded", () => {
     const resistanceContainer = section2.querySelector(
       ".resistance-characters-container",
     );
+    const jeetsSeaContainer = section2.querySelector(".jeets-sea-container");
 
-    // Step 1: Show text for 2 seconds
-    setTimeout(() => {
-      textElement.classList.add("fade-out");
-    }, 2000);
+    // Clear previous animation
+    tankContainer.innerHTML = "";
+    landminesContainer.innerHTML = "";
+    resistanceContainer.innerHTML = "";
+    jeetsSeaContainer.innerHTML = "";
+    textBox.classList.remove("show");
+    animationContainer.classList.remove("active");
+    tankContainer.classList.remove("enter");
+    jeetsSeaContainer.classList.remove("active");
 
-    // Step 2: Start animation container fade in (after 0.5s fade out)
-    setTimeout(() => {
-      animationContainer.classList.add("active");
-    }, 2500);
+    // Reset state
+    section2State.jeets = [];
+    section2State.landmines = [];
+    section2State.tank = null;
+    section2State.resistanceCharacters = [];
+
+    // Show text box immediately
+    textBox.classList.add("show");
+
+    // Start animation container
+    animationContainer.classList.add("active");
 
     // Use predefined positions
 
-    // Step 3: Spawn sea of jeets first (right side)
-    const jeetsSeaContainer = section2.querySelector(".jeets-sea-container");
+    // Step 1: Spawn sea of jeets first (right side)
     const numJeetsSea = 50;
 
     setTimeout(() => {
@@ -337,20 +341,21 @@ document.addEventListener("DOMContentLoaded", () => {
           const row = Math.floor(i / 5);
 
           // Position in grid with slight random offset
-          const left = col * 20 + (Math.random() * 8 - 4); // 0-80% within container
+          const leftInContainer = col * 20 + (Math.random() * 8 - 4); // 0-80% within container
           const top = row * 10 + (Math.random() * 5 - 2.5); // 0-90% within container
 
-          jeet.style.left = `${left}%`;
+          jeet.style.left = `${leftInContainer}%`;
           jeet.style.top = `${top}%`;
           jeet.style.animationDelay = `${(i / numJeetsSea) * 0.8}s`;
 
           jeetsSeaContainer.appendChild(jeet);
 
-          // Store jeet position
-          section2State.jeets.push({ left, top, element: jeet });
+          // Store jeet position - convert to absolute position (container is 20% wide at right: 0)
+          const absoluteLeft = 80 + leftInContainer * 0.2; // 80% + position within 20% container
+          section2State.jeets.push({ left: absoluteLeft, top, element: jeet });
         }, 100);
       }
-    }, 2500);
+    }, 500); // Start shortly after text box
 
     // Step 4: Place landmines at fixed positions one by one (after jeets sea completes)
     section2Positions.landmines.forEach((position, i) => {
@@ -375,8 +380,8 @@ document.addEventListener("DOMContentLoaded", () => {
             element: landmine,
           });
         },
-        3800 + i * 200,
-      ); // After jeets sea (2.5s + 1.3s), 200ms delay between each landmine
+        1900 + i * 50,
+      ); // After jeets sea (600ms + 1.3s), 200ms delay between each landmine
     });
 
     // Step 5: Add tank and trigger entrance (after landmines appear)
@@ -397,7 +402,7 @@ document.addEventListener("DOMContentLoaded", () => {
       setTimeout(() => {
         tankContainer.classList.add("enter");
       }, 50);
-    }, 4800); // 1 second after landmines
+    }, 1900); // 0 second after landmines
 
     // Step 6: Spawn resistance characters (after tank enters)
     const resistanceImages = [
@@ -419,15 +424,6 @@ document.addEventListener("DOMContentLoaded", () => {
           character.src = imgSrc;
           character.className = "resistance-character";
 
-          // Flip specific characters vertically
-          if (
-            imgSrc.includes("Moodeng") ||
-            imgSrc.includes("Wojak") ||
-            imgSrc.includes("Soyjak")
-          ) {
-            character.style.transform = "scaleY(-1)";
-          }
-
           // Use fixed position for this character
           const position = section2Positions.resistanceCharacters[i];
           character.style.left = `${position.left}%`;
@@ -447,75 +443,88 @@ document.addEventListener("DOMContentLoaded", () => {
             character.classList.add("spawn");
           }, 50);
         },
-        6800 + i * 300,
-      ); // Start after tank completes (4.8s + 2s), 300ms delay between each character
+        2300 + i * 50,
+      ); // Start after tank completes (2.9s + 2s), 300ms delay between each character
     });
   }
 
   // Section 3: Missile Barrage Animation
-  let section3Triggered = false;
-
   function startSection3Animation() {
-    if (section3Triggered) return;
-    section3Triggered = true;
-
     const section3 = document.getElementById("scroll-section-3");
-    const textElement = section3.querySelector(".section-content");
+    const textBox = section3.querySelector(".section-text-box");
 
-    // Step 1: Show text for 2 seconds
-    setTimeout(() => {
-      textElement.style.opacity = "0";
-      textElement.style.transition = "opacity 0.5s";
-    }, 2000);
+    // Clear previous animation - remove all dynamically added elements
+    const existingElements = section3.querySelectorAll("img, .barrage-missile");
+    existingElements.forEach((el) => el.remove());
+    textBox.classList.remove("show");
 
-    // Step 2: Recreate Section 2 state in Section 3 using predefined positions
+    // Detect mobile portrait mode
+    const isMobilePortrait = window.matchMedia(
+      "(max-width: 768px) and (orientation: portrait)",
+    ).matches;
+    const mobileResistancePositions = [
+      { left: 45, top: 15 }, // Catpop - top center-left
+      { left: 10, top: 15 }, // DogeWW1 - top left
+      { left: 42, top: 25 }, // Dogwifhat - upper-mid left
+      { left: 27, top: 10 }, // Moodeng - top center (between Doge and Popcat, higher)
+      { left: 45, top: 58 }, // Pepe - mid center-left
+      { left: 20, top: 62 }, // Wojak - lower-mid left
+      { left: 8, top: 75 }, // Soyjak - lower left
+      { left: 38, top: 88 }, // Shiba - bottom center-left
+    ];
+    const resistancePositions = isMobilePortrait
+      ? mobileResistancePositions
+      : section2Positions.resistanceCharacters;
+
+    // Show text box immediately
+    textBox.classList.add("show");
+
+    // Recreate Section 2 state in Section 3 using predefined positions - all appear at once
     setTimeout(() => {
-      // Display all jeets using stored positions
-      section2State.jeets.forEach((jeet, i) => {
-        setTimeout(() => {
-          const jeetImg = document.createElement("img");
-          jeetImg.src = "img/Character - NPC.png";
-          jeetImg.className = "jeet-sea-character";
-          jeetImg.style.position = "absolute";
-          jeetImg.style.left = `${jeet.left}%`;
-          jeetImg.style.top = `${jeet.top}%`;
-          jeetImg.style.animation = "fadeInAnimation 0.3s ease-in forwards";
-          section3.appendChild(jeetImg);
-          jeet.element = jeetImg; // Update reference for missiles
-        }, i * 10);
+      // Display all jeets at once
+      section2State.jeets.forEach((jeet) => {
+        const jeetImg = document.createElement("img");
+        jeetImg.src = "img/Character - NPC.png";
+        jeetImg.className = "jeet-sea-character";
+        jeetImg.style.position = "absolute";
+        jeetImg.style.left = `${jeet.left}%`;
+        jeetImg.style.top = `${jeet.top}%`;
+        jeetImg.style.width = "60px";
+        jeetImg.style.opacity = "0";
+        jeetImg.style.animation = "fadeInAnimation 0.5s ease-in forwards";
+        section3.appendChild(jeetImg);
+        jeet.element = jeetImg; // Update reference for missiles
       });
 
-      // Display landmines using predefined positions
-      section2Positions.landmines.forEach((position, i) => {
-        setTimeout(
-          () => {
-            const landmineImg = document.createElement("img");
-            landmineImg.src = "img/Aux - Landmine.png";
-            landmineImg.className = "landmine";
-            landmineImg.style.position = "absolute";
-            landmineImg.style.left = `${position.left}%`;
-            landmineImg.style.top = `${position.top}%`;
-            landmineImg.style.animation =
-              "fadeInAnimation 0.3s ease-in forwards, landmineThrobbing 2s ease-in-out 0.3s infinite";
-            section3.appendChild(landmineImg);
-          },
-          500 + i * 50,
-        );
+      // Display all landmines at once
+      section2Positions.landmines.forEach((position) => {
+        const landmineImg = document.createElement("img");
+        landmineImg.src = "img/Aux - Landmine.png";
+        landmineImg.className = "landmine";
+        landmineImg.style.position = "absolute";
+        landmineImg.style.left = `${position.left}%`;
+        landmineImg.style.top = `${position.top}%`;
+        landmineImg.style.width = "60px";
+        landmineImg.style.opacity = "0";
+        landmineImg.style.animation =
+          "fadeInAnimation 0.5s ease-in forwards, landmineThrobbing 2s ease-in-out 0.5s infinite";
+        section3.appendChild(landmineImg);
       });
 
-      // Display tank using predefined position
-      setTimeout(() => {
-        const tankImg = document.createElement("img");
-        tankImg.src = "img/Aux - Tank.png";
-        tankImg.className = "tank-container";
-        tankImg.style.position = "absolute";
-        tankImg.style.left = `${section2Positions.tank.left}%`;
-        tankImg.style.top = `${section2Positions.tank.top}%`;
-        tankImg.style.animation = "fadeInAnimation 0.5s ease-in forwards";
-        section3.appendChild(tankImg);
-      }, 800);
+      // Display tank
+      const tankImg = document.createElement("img");
+      tankImg.src = "img/Aux - Tank.png";
+      tankImg.style.position = "absolute";
+      tankImg.style.left = `${section2Positions.tank.left}%`;
+      tankImg.style.top = `${section2Positions.tank.top}%`;
+      tankImg.style.width = "540px";
+      tankImg.style.transform = "translateY(-50%)";
+      tankImg.style.filter = "drop-shadow(0 0 20px rgba(74, 124, 58, 0.6))";
+      tankImg.style.opacity = "0";
+      tankImg.style.animation = "fadeInAnimation 0.5s ease-in forwards";
+      section3.appendChild(tankImg);
 
-      // Display resistance characters using predefined positions
+      // Display all resistance characters at once
       const resistanceImages = [
         "img/Character - Catpop.png",
         "img/Character - DogeWW1.png",
@@ -527,35 +536,29 @@ document.addEventListener("DOMContentLoaded", () => {
         "img/Character - Shiba.png",
       ];
 
-      section2Positions.resistanceCharacters.forEach((position, i) => {
-        setTimeout(
-          () => {
-            const characterImg = document.createElement("img");
-            characterImg.src = resistanceImages[i];
-            characterImg.className = "resistance-character";
-            characterImg.style.position = "absolute";
-            characterImg.style.left = `${position.left}%`;
-            characterImg.style.top = `${position.top}%`;
+      resistancePositions.forEach((position, i) => {
+        const characterImg = document.createElement("img");
+        characterImg.src = resistanceImages[i];
+        characterImg.className = "resistance-character";
+        characterImg.style.position = "absolute";
+        characterImg.style.left = `${position.left}%`;
+        characterImg.style.top = `${position.top}%`;
+        characterImg.style.width = "140px";
+        characterImg.style.opacity = "0";
+        characterImg.style.filter =
+          "drop-shadow(0 0 10px rgba(107, 168, 58, 0.5))";
+        characterImg.style.animation = "fadeInAnimation 0.5s ease-in forwards";
+        section3.appendChild(characterImg);
 
-            // Flip specific characters vertically
-            if (
-              resistanceImages[i].includes("Moodeng") ||
-              resistanceImages[i].includes("Wojak") ||
-              resistanceImages[i].includes("Soyjak")
-            ) {
-              characterImg.style.transform = "scaleY(-1)";
-            }
-
-            characterImg.style.animation =
-              "fadeInAnimation 0.4s ease-in forwards";
-            section3.appendChild(characterImg);
-          },
-          1300 + i * 100,
-        );
+        // Update section2State with the position being used (for missile targeting)
+        section2State.resistanceCharacters[i] = {
+          element: characterImg,
+          position: position,
+        };
       });
-    }, 2500);
+    }, 600); // Start shortly after text box
 
-    // Step 3: Start missile barrage after all elements are displayed
+    // Start missile barrage after all elements fade in (600ms + 500ms fade)
     setTimeout(() => {
       // Fire missiles from each resistance character position to random jeets
       section2State.resistanceCharacters.forEach((character, i) => {
@@ -573,18 +576,29 @@ document.addEventListener("DOMContentLoaded", () => {
               );
               const target = section2State.jeets[targetIndex];
 
-              // Create missile
-              const missile = document.createElement("div");
+              // Create missile using image
+              const missile = document.createElement("img");
+              missile.src = "img/Aux - Missile.png";
               missile.className = "barrage-missile";
-              missile.style.left = `${character.left}%`;
-              missile.style.top = `${character.top}%`;
+              missile.style.position = "absolute";
+              missile.style.left = `${character.position.left}%`;
+              missile.style.top = `${character.position.top}%`;
+              missile.style.width = "80px";
+              missile.style.height = "auto";
+              missile.style.pointerEvents = "none";
 
-              // Calculate trajectory to target
-              const deltaX = target.left - character.left;
-              const deltaY = target.top - character.top;
+              // Calculate trajectory to target (in viewport units for accurate travel)
+              const deltaX = target.left - character.position.left;
+              const deltaY = target.top - character.position.top;
 
-              missile.style.setProperty("--target-x", `${deltaX}%`);
-              missile.style.setProperty("--target-y", `${deltaY}%`);
+              // Calculate rotation angle to point at target
+              const angle = Math.atan2(deltaY, deltaX) * (180 / Math.PI);
+              missile.style.transform = `rotate(${angle}deg)`;
+
+              // Use vw/vh units so translate is relative to viewport, not element size
+              missile.style.setProperty("--target-x", `${deltaX}vw`);
+              missile.style.setProperty("--target-y", `${deltaY}vh`);
+              missile.style.setProperty("--rotation", `${angle}deg`);
 
               section3.appendChild(missile);
 
@@ -602,7 +616,33 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         }, i * 400); // Stagger by character
       });
-    }, 5000); // Start missiles after all elements displayed (2.5s + ~2.5s for all animations)
+    }, 1200); // Start missiles after fade-in completes (600ms + 500ms fade + 100ms buffer)
+  }
+
+  // Section 4: Arthur Diamond Hands Animation
+  function startSection4Animation() {
+    const section4 = document.getElementById("scroll-section-4");
+    const textBox = section4.querySelector(".section-text-box");
+    const arthurContainer = section4.querySelector(".arthur-container");
+
+    // Clear previous animation
+    arthurContainer.innerHTML = "";
+    textBox.classList.remove("show");
+    arthurContainer.classList.remove("active");
+
+    // Show text box immediately
+    textBox.classList.add("show");
+
+    // Create and display Arthur image with fade-in and glow
+    setTimeout(() => {
+      const arthurImg = document.createElement("img");
+      arthurImg.src = "img/Aux - Arthur Diamond Hands.jpg";
+      arthurImg.alt = "Arthur Diamond Hands";
+      arthurContainer.appendChild(arthurImg);
+
+      // Trigger fade-in animation
+      arthurContainer.classList.add("active");
+    }, 600);
   }
 
   // Scroll-triggered animations (to be expanded)
@@ -629,6 +669,11 @@ document.addEventListener("DOMContentLoaded", () => {
         // Trigger Section 3 animation when it comes into view
         if (entry.target.id === "scroll-section-3") {
           startSection3Animation();
+        }
+
+        // Trigger Section 4 animation when it comes into view
+        if (entry.target.id === "scroll-section-4") {
+          startSection4Animation();
         }
       }
     });
