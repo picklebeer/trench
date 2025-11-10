@@ -182,6 +182,61 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // Section 1: Jeets Animation
+  function initSection1Animation() {
+    const section1 = document.getElementById("scroll-section-1");
+    const candlesContainer = section1.querySelector(".red-candles-container");
+    const jeetsContainer = section1.querySelector(".jeets-container");
+
+    // Generate 15 red candles with varying heights
+    const numCandles = 15;
+    for (let i = 0; i < numCandles; i++) {
+      const candle = document.createElement("div");
+      candle.className = "red-candle";
+      const height = Math.random() * 200 + 100; // Random height between 100-300px
+      candle.style.height = `${height}px`;
+      candle.style.animationDelay = `${i * 0.1}s`;
+      candlesContainer.appendChild(candle);
+    }
+
+    // Spawn 30 Jeets over 2 seconds
+    const numJeets = 30;
+    const spawnDuration = 2000; // 2 seconds
+
+    for (let i = 0; i < numJeets; i++) {
+      setTimeout(
+        () => {
+          const jeet = document.createElement("img");
+          jeet.src = "img/Character - NPC.png";
+          jeet.className = "jeet-character";
+
+          // Random position based on candle locations
+          const candleIndex = Math.floor(Math.random() * numCandles);
+          const candle = candlesContainer.children[candleIndex];
+          const candleRect = candle.getBoundingClientRect();
+          const containerRect = jeetsContainer.getBoundingClientRect();
+
+          // Position jeet near a candle
+          const left =
+            (candleIndex / numCandles) * 100 + (Math.random() * 5 - 2.5);
+          const bottom = Math.random() * 30 + 20; // Random height above candles
+
+          jeet.style.left = `${left}%`;
+          jeet.style.bottom = `${bottom}%`;
+          jeet.style.animationDelay = "0s";
+
+          jeetsContainer.appendChild(jeet);
+        },
+        (i / numJeets) * spawnDuration + 4000,
+      ); // Start after 4s (after text fades)
+    }
+  }
+
+  // Initialize Section 1 animation when page loads
+  setTimeout(() => {
+    initSection1Animation();
+  }, 1000);
+
   // Scroll-triggered animations (to be expanded)
   const observerOptions = {
     threshold: 0.1,
