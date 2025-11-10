@@ -104,17 +104,17 @@ if [[ ! -f "${CURRENT_DIR}/index.html" ]]; then
 fi
 
 # Copy all files
-cp -rf ${CURRENT_DIR}/index.html ${WEB_ROOT}/
-cp -rf ${CURRENT_DIR}/style.css ${WEB_ROOT}/
-cp -rf ${CURRENT_DIR}/script.js ${WEB_ROOT}/
+#cp -rf ${CURRENT_DIR}/index.html ${WEB_ROOT}/
+#cp -rf ${CURRENT_DIR}/style.css ${WEB_ROOT}/
+#cp -rf ${CURRENT_DIR}/script.js ${WEB_ROOT}/
 
 # Copy img directory if it exists
-if [[ -d "${CURRENT_DIR}/img" ]]; then
-    cp -rf ${CURRENT_DIR}/img ${WEB_ROOT}/
-else
-    print_warning "img directory not found. Make sure to upload images to ${WEB_ROOT}/img/"
-    mkdir -p ${WEB_ROOT}/img
-fi
+#if [[ -d "${CURRENT_DIR}/img" ]]; then
+#    cp -rf ${CURRENT_DIR}/img ${WEB_ROOT}/
+#else
+#    print_warning "img directory not found. Make sure to upload images to ${WEB_ROOT}/img/"
+#    mkdir -p ${WEB_ROOT}/img
+#fi
 
 # Set proper permissions
 chown -R www-data:www-data ${WEB_ROOT}
