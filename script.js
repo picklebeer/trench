@@ -383,6 +383,38 @@ document.addEventListener("DOMContentLoaded", () => {
         5500 + i * 300,
       ); // Start after tank (5.5s), 300ms delay between each character
     });
+
+    // Step 6: Spawn sea of jeets on the right side (after all resistance characters appear)
+    const jeetsSeaContainer = section2.querySelector(".jeets-sea-container");
+    const numJeetsSea = 50; // Large number for "sea" effect
+    const jeetsSeaStartTime = 5500 + resistanceImages.length * 300 + 500; // After last character + 500ms
+
+    setTimeout(() => {
+      jeetsSeaContainer.classList.add("active");
+
+      // Spawn jeets in a dense grid pattern on right side
+      for (let i = 0; i < numJeetsSea; i++) {
+        setTimeout(() => {
+          const jeet = document.createElement("img");
+          jeet.src = "img/Character - NPC.png";
+          jeet.className = "jeet-sea-character";
+
+          // Create dense grid: 5 columns x 10 rows
+          const col = i % 5;
+          const row = Math.floor(i / 5);
+
+          // Position in grid with slight random offset
+          const left = col * 20 + (Math.random() * 8 - 4); // 0-80% within container
+          const top = row * 10 + (Math.random() * 5 - 2.5); // 0-90% within container
+
+          jeet.style.left = `${left}%`;
+          jeet.style.top = `${top}%`;
+          jeet.style.animationDelay = `${(i / numJeetsSea) * 0.8}s`; // Stagger appearance
+
+          jeetsSeaContainer.appendChild(jeet);
+        }, 100);
+      }
+    }, jeetsSeaStartTime);
   }
 
   // Scroll-triggered animations (to be expanded)
