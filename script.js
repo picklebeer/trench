@@ -375,6 +375,15 @@ document.addEventListener("DOMContentLoaded", () => {
           character.src = imgSrc;
           character.className = "resistance-character";
 
+          // Flip specific characters vertically
+          if (
+            imgSrc.includes("Moodeng") ||
+            imgSrc.includes("Wojak") ||
+            imgSrc.includes("Soyjak")
+          ) {
+            character.style.transform = "scaleY(-1)";
+          }
+
           // Position characters randomly all over the screen, avoiding landmines
           // Try to find a safe position
           let left,
