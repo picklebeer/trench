@@ -287,46 +287,43 @@ document.addEventListener("DOMContentLoaded", () => {
     // Define tank position (left: 5%, centered vertically at 50%)
     const tankPosition = { left: 5, top: 50 };
 
-    // Helper function to check if position overlaps with tank
-    function isTooCloseToTank(left, top, minDistance = 25) {
-      const distance = Math.sqrt(
-        Math.pow(left - tankPosition.left, 2) +
-          Math.pow(top - tankPosition.top, 2),
-      );
-      return distance < minDistance;
-    }
+    // Fixed positions for resistance characters (2 columns x 4 rows on left side)
+    const characterFixedPositions = [
+      { left: 20, top: 20 }, // Catpop
+      { left: 35, top: 20 }, // DogeWW1
+      { left: 20, top: 40 }, // Dogwifhat
+      { left: 35, top: 40 }, // Moodeng
+      { left: 20, top: 60 }, // Pepe
+      { left: 35, top: 60 }, // Wojak
+      { left: 20, top: 80 }, // Soyjak
+      { left: 35, top: 80 }, // Shiba
+    ];
 
-    // Step 3: Place landmines first (avoiding tank area)
-    const landminePositions = [];
+    // Fixed positions for landmines (avoiding tank and character positions, concentrated at bottom)
+    const landmineFixedPositions = [
+      { left: 55, top: 65 },
+      { left: 70, top: 55 },
+      { left: 45, top: 75 },
+      { left: 80, top: 70 },
+      { left: 60, top: 85 },
+      { left: 75, top: 80 },
+    ];
+
+    // Step 3: Place landmines at fixed positions
     setTimeout(() => {
-      const numLandmines = 6;
-      for (let i = 0; i < numLandmines; i++) {
+      landmineFixedPositions.forEach((position, i) => {
         const landmine = document.createElement("img");
         landmine.src = "img/Aux - Landmine.png";
         landmine.className = "landmine";
 
-        // Find a position that doesn't overlap with tank
-        let left,
-          top,
-          attempts = 0;
-        do {
-          // Scatter landmines across the middle and right portion, concentrated toward bottom
-          left = 30 + Math.random() * 60; // 30% to 90% from left
-          top = 50 + Math.random() * 40; // 50% to 90% from top (bottom half)
-          attempts++;
-        } while (isTooCloseToTank(left, top) && attempts < 50);
-
-        landmine.style.left = `${left}%`;
-        landmine.style.top = `${top}%`;
-
-        // Store landmine position for collision detection
-        landminePositions.push({ left, top });
+        landmine.style.left = `${position.left}%`;
+        landmine.style.top = `${position.top}%`;
 
         // Randomize animation delay for varied throbbing
         landmine.style.animationDelay = `${Math.random() * 2}s`;
 
         landminesContainer.appendChild(landmine);
-      }
+      });
     }, 2500);
 
     // Step 4: Add tank and trigger entrance (after landmines appear)
@@ -342,44 +339,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }, 50);
     }, 3500); // 1 second after landmines
 
-    // Helper function to check if position overlaps with landmines
-    function isPositionSafe(left, top, minDistance = 15) {
-      for (const landmine of landminePositions) {
-        const distance = Math.sqrt(
-          Math.pow(left - landmine.left, 2) + Math.pow(top - landmine.top, 2),
-        );
-        if (distance < minDistance) {
-          return false;
-        }
-      }
-      return true;
-    }
-
-    // Track character positions to prevent overlapping
-    const characterPositions = [];
-
-    // Helper function to check if position overlaps with other characters
-    function isPositionSafeFromCharacters(left, top, minDistance = 18) {
-      for (const char of characterPositions) {
-        const distance = Math.sqrt(
-          Math.pow(left - char.left, 2) + Math.pow(top - char.top, 2),
-        );
-        if (distance < minDistance) {
-          return false;
-        }
-      }
-      return true;
-    }
-
-    // Helper function to check if character position overlaps with tank
-    function isPositionSafeFromTank(left, top, minDistance = 20) {
-      const distance = Math.sqrt(
-        Math.pow(left - tankPosition.left, 2) +
-          Math.pow(top - tankPosition.top, 2),
-      );
-      return distance >= minDistance;
-    }
-
     // Step 5: Spawn resistance characters
     const resistanceImages = [
       "img/Character - Catpop.png",
@@ -390,18 +349,6 @@ document.addEventListener("DOMContentLoaded", () => {
       "img/Character - Wojak.png",
       "img/Character - Soyjak.png",
       "img/Character - Shiba.png",
-    ];
-
-    // Fixed positions for resistance characters (2 columns x 4 rows on left side)
-    const fixedPositions = [
-      { left: 20, top: 20 }, // Catpop
-      { left: 35, top: 20 }, // DogeWW1
-      { left: 20, top: 40 }, // Dogwifhat
-      { left: 35, top: 40 }, // Moodeng
-      { left: 20, top: 60 }, // Pepe
-      { left: 35, top: 60 }, // Wojak
-      { left: 20, top: 80 }, // Soyjak
-      { left: 35, top: 80 }, // Shiba
     ];
 
     // Spawn each character individually with delay between them
@@ -422,7 +369,7 @@ document.addEventListener("DOMContentLoaded", () => {
           }
 
           // Use fixed position for this character
-          const position = fixedPositions[i];
+          const position = characterFixedPositions[i];
           character.style.left = `${position.left}%`;
           character.style.top = `${position.top}%`;
 
