@@ -259,6 +259,14 @@ document.addEventListener("DOMContentLoaded", () => {
   // Section 2: Resistance Animation
   let section2Triggered = false;
 
+  // Store Section 2 final positions for use in Section 3
+  const section2State = {
+    jeets: [],
+    landmines: [],
+    tank: null,
+    resistanceCharacters: [],
+  };
+
   function startSection2Animation() {
     if (section2Triggered) return;
     section2Triggered = true;
@@ -336,6 +344,9 @@ document.addEventListener("DOMContentLoaded", () => {
           jeet.style.animationDelay = `${(i / numJeetsSea) * 0.8}s`;
 
           jeetsSeaContainer.appendChild(jeet);
+
+          // Store jeet position
+          section2State.jeets.push({ left, top, element: jeet });
         }, 100);
       }
     }, 2500);
@@ -355,6 +366,13 @@ document.addEventListener("DOMContentLoaded", () => {
           landmine.style.animationDelay = `${Math.random() * 2}s`;
 
           landminesContainer.appendChild(landmine);
+
+          // Store landmine position
+          section2State.landmines.push({
+            left: position.left,
+            top: position.top,
+            element: landmine,
+          });
         },
         3800 + i * 200,
       ); // After jeets sea (2.5s + 1.3s), 200ms delay between each landmine
@@ -366,6 +384,13 @@ document.addEventListener("DOMContentLoaded", () => {
       tank.src = "img/Aux - Tank.png";
       tank.alt = "Tank";
       tankContainer.appendChild(tank);
+
+      // Store tank position
+      section2State.tank = {
+        left: tankPosition.left,
+        top: tankPosition.top,
+        element: tank,
+      };
 
       // Trigger tank entrance animation
       setTimeout(() => {
@@ -409,6 +434,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
           resistanceContainer.appendChild(character);
 
+          // Store resistance character position
+          section2State.resistanceCharacters.push({
+            left: position.left,
+            top: position.top,
+            element: character,
+          });
+
           // Trigger spawn animation
           setTimeout(() => {
             character.classList.add("spawn");
@@ -417,6 +449,72 @@ document.addEventListener("DOMContentLoaded", () => {
         6800 + i * 300,
       ); // Start after tank completes (4.8s + 2s), 300ms delay between each character
     });
+  }
+
+  // Section 3: Missile Barrage Animation
+  let section3Triggered = false;
+
+  function startSection3Animation() {
+    if (section3Triggered) return;
+    section3Triggered = true;
+
+    const section3 = document.getElementById("scroll-section-3");
+    const textElement = section3.querySelector(".section-content");
+
+    // Step 1: Show text for 2 seconds
+    setTimeout(() => {
+      textElement.style.opacity = "0";
+      textElement.style.transition = "opacity 0.5s";
+    }, 2000);
+
+    // Step 2: Start missile barrage after text fades
+    setTimeout(() => {
+      // Fire missiles from each resistance character position to random jeets
+      section2State.resistanceCharacters.forEach((character, i) => {
+        setTimeout(() => {
+          // Pick random jeets to target (3-6 missiles per character)
+          const numMissiles = Math.floor(Math.random() * 4) + 3;
+
+          for (let m = 0; m < numMissiles; m++) {
+            setTimeout(() => {
+              if (section2State.jeets.length === 0) return;
+
+              // Pick random jeet target
+              const targetIndex = Math.floor(
+                Math.random() * section2State.jeets.length,
+              );
+              const target = section2State.jeets[targetIndex];
+
+              // Create missile
+              const missile = document.createElement("div");
+              missile.className = "barrage-missile";
+              missile.style.left = `${character.left}%`;
+              missile.style.top = `${character.top}%`;
+
+              // Calculate trajectory to target
+              const deltaX = target.left - character.left;
+              const deltaY = target.top - character.top;
+
+              missile.style.setProperty("--target-x", `${deltaX}%`);
+              missile.style.setProperty("--target-y", `${deltaY}%`);
+
+              section3.appendChild(missile);
+
+              // Remove missile and jeet after impact
+              setTimeout(() => {
+                missile.remove();
+                if (target.element && target.element.parentNode) {
+                  target.element.style.animation = "jeetDeath 0.3s forwards";
+                  setTimeout(() => target.element.remove(), 300);
+                }
+                // Remove from array
+                section2State.jeets.splice(targetIndex, 1);
+              }, 800);
+            }, m * 150); // Stagger missiles from same character
+          }
+        }, i * 400); // Stagger by character
+      });
+    }, 2500);
   }
 
   // Scroll-triggered animations (to be expanded)
@@ -438,6 +536,11 @@ document.addEventListener("DOMContentLoaded", () => {
         // Trigger Section 2 animation when it comes into view
         if (entry.target.id === "scroll-section-2") {
           startSection2Animation();
+        }
+
+        // Trigger Section 3 animation when it comes into view
+        if (entry.target.id === "scroll-section-3") {
+          startSection3Animation();
         }
       }
     });
