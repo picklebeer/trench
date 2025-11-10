@@ -284,21 +284,8 @@ document.addEventListener("DOMContentLoaded", () => {
       animationContainer.classList.add("active");
     }, 2500);
 
-    // Step 3: Add tank and trigger entrance
     // Define tank position (left: 10%, centered vertically at 50%)
     const tankPosition = { left: 10, top: 50 };
-
-    setTimeout(() => {
-      const tank = document.createElement("img");
-      tank.src = "img/Aux - Tank.png";
-      tank.alt = "Tank";
-      tankContainer.appendChild(tank);
-
-      // Trigger tank entrance animation
-      setTimeout(() => {
-        tankContainer.classList.add("enter");
-      }, 50);
-    }, 2500);
 
     // Helper function to check if position overlaps with tank
     function isTooCloseToTank(left, top, minDistance = 25) {
@@ -309,7 +296,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return distance < minDistance;
     }
 
-    // Step 4: Place landmines (avoiding tank area)
+    // Step 3: Place landmines first (avoiding tank area)
     const landminePositions = [];
     setTimeout(() => {
       const numLandmines = 12;
@@ -341,6 +328,19 @@ document.addEventListener("DOMContentLoaded", () => {
         landminesContainer.appendChild(landmine);
       }
     }, 2500);
+
+    // Step 4: Add tank and trigger entrance (after landmines appear)
+    setTimeout(() => {
+      const tank = document.createElement("img");
+      tank.src = "img/Aux - Tank.png";
+      tank.alt = "Tank";
+      tankContainer.appendChild(tank);
+
+      // Trigger tank entrance animation
+      setTimeout(() => {
+        tankContainer.classList.add("enter");
+      }, 50);
+    }, 3500); // 1 second after landmines
 
     // Helper function to check if position overlaps with landmines
     function isPositionSafe(left, top, minDistance = 15) {
@@ -405,8 +405,8 @@ document.addEventListener("DOMContentLoaded", () => {
             character.classList.add("spawn");
           }, 50);
         },
-        (i / resistanceImages.length) * spawnDuration + 3000,
-      ); // Start after tank enters (2.5s + 500ms delay)
+        (i / resistanceImages.length) * spawnDuration + 5500,
+      ); // Start after tank entrance completes (3.5s + 2s tank animation)
     });
   }
 
