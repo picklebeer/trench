@@ -467,7 +467,71 @@ document.addEventListener("DOMContentLoaded", () => {
       textElement.style.transition = "opacity 0.5s";
     }, 2000);
 
-    // Step 2: Start missile barrage after text fades
+    // Step 2: Recreate Section 2 state in Section 3 (after text fades)
+    setTimeout(() => {
+      // Clone and display all jeets
+      section2State.jeets.forEach((jeet, i) => {
+        setTimeout(() => {
+          const jeetClone = jeet.element.cloneNode(true);
+          jeetClone.style.position = "absolute";
+          jeetClone.style.left = `${jeet.left}%`;
+          jeetClone.style.top = `${jeet.top}%`;
+          jeetClone.style.width = "60px";
+          jeetClone.style.animation = "fadeInAnimation 0.3s ease-in forwards";
+          section3.appendChild(jeetClone);
+          // Update reference to section 3 clone
+          jeet.element = jeetClone;
+        }, i * 10); // Fast stagger for sea effect
+      });
+
+      // Clone and display all landmines
+      section2State.landmines.forEach((landmine, i) => {
+        setTimeout(
+          () => {
+            const landmineClone = landmine.element.cloneNode(true);
+            landmineClone.style.position = "absolute";
+            landmineClone.style.left = `${landmine.left}%`;
+            landmineClone.style.top = `${landmine.top}%`;
+            landmineClone.style.animation =
+              "fadeInAnimation 0.3s ease-in forwards, landmineThrobbing 2s ease-in-out 0.3s infinite";
+            section3.appendChild(landmineClone);
+          },
+          500 + i * 50,
+        );
+      });
+
+      // Clone and display tank
+      if (section2State.tank) {
+        setTimeout(() => {
+          const tankClone = section2State.tank.element.cloneNode(true);
+          tankClone.style.position = "absolute";
+          tankClone.style.left = `${section2State.tank.left}%`;
+          tankClone.style.top = `${section2State.tank.top}%`;
+          tankClone.style.width = "540px";
+          tankClone.style.animation = "fadeInAnimation 0.5s ease-in forwards";
+          section3.appendChild(tankClone);
+        }, 800);
+      }
+
+      // Clone and display resistance characters
+      section2State.resistanceCharacters.forEach((character, i) => {
+        setTimeout(
+          () => {
+            const characterClone = character.element.cloneNode(true);
+            characterClone.style.position = "absolute";
+            characterClone.style.left = `${character.left}%`;
+            characterClone.style.top = `${character.top}%`;
+            characterClone.style.width = "140px";
+            characterClone.style.animation =
+              "fadeInAnimation 0.4s ease-in forwards";
+            section3.appendChild(characterClone);
+          },
+          1300 + i * 100,
+        );
+      });
+    }, 2500);
+
+    // Step 3: Start missile barrage after all elements are displayed
     setTimeout(() => {
       // Fire missiles from each resistance character position to random jeets
       section2State.resistanceCharacters.forEach((character, i) => {
@@ -514,7 +578,7 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         }, i * 400); // Stagger by character
       });
-    }, 2500);
+    }, 5000); // Start missiles after all elements displayed (2.5s + ~2.5s for all animations)
   }
 
   // Scroll-triggered animations (to be expanded)
