@@ -309,7 +309,38 @@ document.addEventListener("DOMContentLoaded", () => {
       { left: 75, top: 80 },
     ];
 
-    // Step 3: Place landmines at fixed positions
+    // Step 3: Spawn sea of jeets first (right side)
+    const jeetsSeaContainer = section2.querySelector(".jeets-sea-container");
+    const numJeetsSea = 50;
+
+    setTimeout(() => {
+      jeetsSeaContainer.classList.add("active");
+
+      // Spawn jeets in a dense grid pattern on right side
+      for (let i = 0; i < numJeetsSea; i++) {
+        setTimeout(() => {
+          const jeet = document.createElement("img");
+          jeet.src = "img/Character - NPC.png";
+          jeet.className = "jeet-sea-character";
+
+          // Create dense grid: 5 columns x 10 rows
+          const col = i % 5;
+          const row = Math.floor(i / 5);
+
+          // Position in grid with slight random offset
+          const left = col * 20 + (Math.random() * 8 - 4); // 0-80% within container
+          const top = row * 10 + (Math.random() * 5 - 2.5); // 0-90% within container
+
+          jeet.style.left = `${left}%`;
+          jeet.style.top = `${top}%`;
+          jeet.style.animationDelay = `${(i / numJeetsSea) * 0.8}s`;
+
+          jeetsSeaContainer.appendChild(jeet);
+        }, 100);
+      }
+    }, 2500);
+
+    // Step 4: Place landmines at fixed positions (after jeets sea completes)
     setTimeout(() => {
       landmineFixedPositions.forEach((position, i) => {
         const landmine = document.createElement("img");
@@ -324,9 +355,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         landminesContainer.appendChild(landmine);
       });
-    }, 2500);
+    }, 3800); // After jeets sea (2.5s + 1.3s)
 
-    // Step 4: Add tank and trigger entrance (after landmines appear)
+    // Step 5: Add tank and trigger entrance (after landmines appear)
     setTimeout(() => {
       const tank = document.createElement("img");
       tank.src = "img/Aux - Tank.png";
@@ -337,9 +368,9 @@ document.addEventListener("DOMContentLoaded", () => {
       setTimeout(() => {
         tankContainer.classList.add("enter");
       }, 50);
-    }, 3500); // 1 second after landmines
+    }, 4800); // 1 second after landmines
 
-    // Step 5: Spawn resistance characters
+    // Step 6: Spawn resistance characters (after tank enters)
     const resistanceImages = [
       "img/Character - Catpop.png",
       "img/Character - DogeWW1.png",
@@ -380,41 +411,9 @@ document.addEventListener("DOMContentLoaded", () => {
             character.classList.add("spawn");
           }, 50);
         },
-        5500 + i * 300,
-      ); // Start after tank (5.5s), 300ms delay between each character
+        6800 + i * 300,
+      ); // Start after tank completes (4.8s + 2s), 300ms delay between each character
     });
-
-    // Step 6: Spawn sea of jeets on the right side (after all resistance characters appear)
-    const jeetsSeaContainer = section2.querySelector(".jeets-sea-container");
-    const numJeetsSea = 50; // Large number for "sea" effect
-    const jeetsSeaStartTime = 5500 + resistanceImages.length * 300 + 500; // After last character + 500ms
-
-    setTimeout(() => {
-      jeetsSeaContainer.classList.add("active");
-
-      // Spawn jeets in a dense grid pattern on right side
-      for (let i = 0; i < numJeetsSea; i++) {
-        setTimeout(() => {
-          const jeet = document.createElement("img");
-          jeet.src = "img/Character - NPC.png";
-          jeet.className = "jeet-sea-character";
-
-          // Create dense grid: 5 columns x 10 rows
-          const col = i % 5;
-          const row = Math.floor(i / 5);
-
-          // Position in grid with slight random offset
-          const left = col * 20 + (Math.random() * 8 - 4); // 0-80% within container
-          const top = row * 10 + (Math.random() * 5 - 2.5); // 0-90% within container
-
-          jeet.style.left = `${left}%`;
-          jeet.style.top = `${top}%`;
-          jeet.style.animationDelay = `${(i / numJeetsSea) * 0.8}s`; // Stagger appearance
-
-          jeetsSeaContainer.appendChild(jeet);
-        }, 100);
-      }
-    }, jeetsSeaStartTime);
   }
 
   // Scroll-triggered animations (to be expanded)
