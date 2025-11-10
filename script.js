@@ -3,6 +3,32 @@ document.addEventListener("DOMContentLoaded", () => {
   const loadingScreen = document.getElementById("loading-screen");
   const mainContent = document.getElementById("main-content");
   const loadingPercentage = document.querySelector(".loading-percentage");
+  const backgroundMusic = document.getElementById("background-music");
+
+  // Attempt to play background music on user interaction
+  const playMusic = () => {
+    if (backgroundMusic) {
+      backgroundMusic.volume = 0.3; // Set volume to 30%
+      backgroundMusic.play().catch((error) => {
+        console.log("Autoplay prevented, waiting for user interaction:", error);
+      });
+    }
+  };
+
+  // Try to play music immediately
+  playMusic();
+
+  // If autoplay is blocked, play on first user interaction
+  const enableAudioOnInteraction = () => {
+    playMusic();
+    document.removeEventListener("click", enableAudioOnInteraction);
+    document.removeEventListener("keydown", enableAudioOnInteraction);
+    document.removeEventListener("touchstart", enableAudioOnInteraction);
+  };
+
+  document.addEventListener("click", enableAudioOnInteraction);
+  document.addEventListener("keydown", enableAudioOnInteraction);
+  document.addEventListener("touchstart", enableAudioOnInteraction);
 
   // Check if elements exist
   if (!loadingPercentage) {
