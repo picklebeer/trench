@@ -285,6 +285,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 2500);
 
     // Step 3: Add tank and trigger entrance
+    // Define tank position (left: 10%, centered vertically at 50%)
+    const tankPosition = { left: 10, top: 50 };
+
     setTimeout(() => {
       const tank = document.createElement("img");
       tank.src = "img/Aux - Tank.png";
@@ -297,7 +300,16 @@ document.addEventListener("DOMContentLoaded", () => {
       }, 50);
     }, 2500);
 
-    // Step 4: Place landmines first (before characters spawn)
+    // Helper function to check if position overlaps with tank
+    function isTooCloseToTank(left, top, minDistance = 25) {
+      const distance = Math.sqrt(
+        Math.pow(left - tankPosition.left, 2) +
+          Math.pow(top - tankPosition.top, 2),
+      );
+      return distance < minDistance;
+    }
+
+    // Step 4: Place landmines (avoiding tank area)
     const landminePositions = [];
     setTimeout(() => {
       const numLandmines = 12;
@@ -306,9 +318,16 @@ document.addEventListener("DOMContentLoaded", () => {
         landmine.src = "img/Aux - Landmine.png";
         landmine.className = "landmine";
 
-        // Scatter landmines across the middle and right portion of the screen
-        const left = 30 + Math.random() * 60; // 30% to 90% from left
-        const top = 20 + Math.random() * 60; // 20% to 80% from top
+        // Find a position that doesn't overlap with tank
+        let left,
+          top,
+          attempts = 0;
+        do {
+          // Scatter landmines across the middle and right portion of the screen
+          left = 30 + Math.random() * 60; // 30% to 90% from left
+          top = 20 + Math.random() * 60; // 20% to 80% from top
+          attempts++;
+        } while (isTooCloseToTank(left, top) && attempts < 50);
 
         landmine.style.left = `${left}%`;
         landmine.style.top = `${top}%`;
