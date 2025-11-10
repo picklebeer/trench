@@ -259,7 +259,31 @@ document.addEventListener("DOMContentLoaded", () => {
   // Section 2: Resistance Animation
   let section2Triggered = false;
 
-  // Store Section 2 final positions for use in Section 3
+  // Pre-defined positions for Section 2 (used in both Section 2 and Section 3)
+  const section2Positions = {
+    tank: { left: 5, top: 50 },
+    resistanceCharacters: [
+      { left: 15, top: 10 }, // Catpop
+      { left: 30, top: 20 }, // DogeWW1
+      { left: 45, top: 30 }, // Dogwifhat
+      { left: 60, top: 40 }, // Moodeng
+      { left: 15, top: 50 }, // Pepe
+      { left: 30, top: 60 }, // Wojak
+      { left: 45, top: 70 }, // Soyjak
+      { left: 60, top: 80 }, // Shiba
+    ],
+    landmines: [
+      { left: 55, top: 65 },
+      { left: 70, top: 55 },
+      { left: 45, top: 75 },
+      { left: 80, top: 70 },
+      { left: 60, top: 85 },
+      { left: 75, top: 80 },
+    ],
+    jeets: [], // Will be populated dynamically
+  };
+
+  // Store Section 2 state for use in Section 3
   const section2State = {
     jeets: [],
     landmines: [],
@@ -292,30 +316,7 @@ document.addEventListener("DOMContentLoaded", () => {
       animationContainer.classList.add("active");
     }, 2500);
 
-    // Define tank position (left: 5%, centered vertically at 50%)
-    const tankPosition = { left: 5, top: 50 };
-
-    // Fixed positions for resistance characters (spread across full height)
-    const characterFixedPositions = [
-      { left: 15, top: 10 }, // Catpop
-      { left: 30, top: 20 }, // DogeWW1
-      { left: 45, top: 30 }, // Dogwifhat
-      { left: 60, top: 40 }, // Moodeng
-      { left: 15, top: 50 }, // Pepe
-      { left: 30, top: 60 }, // Wojak
-      { left: 45, top: 70 }, // Soyjak
-      { left: 60, top: 80 }, // Shiba
-    ];
-
-    // Fixed positions for landmines (avoiding tank and character positions, concentrated at bottom)
-    const landmineFixedPositions = [
-      { left: 55, top: 65 },
-      { left: 70, top: 55 },
-      { left: 45, top: 75 },
-      { left: 80, top: 70 },
-      { left: 60, top: 85 },
-      { left: 75, top: 80 },
-    ];
+    // Use predefined positions
 
     // Step 3: Spawn sea of jeets first (right side)
     const jeetsSeaContainer = section2.querySelector(".jeets-sea-container");
@@ -352,7 +353,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 2500);
 
     // Step 4: Place landmines at fixed positions one by one (after jeets sea completes)
-    landmineFixedPositions.forEach((position, i) => {
+    section2Positions.landmines.forEach((position, i) => {
       setTimeout(
         () => {
           const landmine = document.createElement("img");
@@ -387,8 +388,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Store tank position
       section2State.tank = {
-        left: tankPosition.left,
-        top: tankPosition.top,
+        left: section2Positions.tank.left,
+        top: section2Positions.tank.top,
         element: tank,
       };
 
@@ -428,7 +429,7 @@ document.addEventListener("DOMContentLoaded", () => {
           }
 
           // Use fixed position for this character
-          const position = characterFixedPositions[i];
+          const position = section2Positions.resistanceCharacters[i];
           character.style.left = `${position.left}%`;
           character.style.top = `${position.top}%`;
 
@@ -467,53 +468,87 @@ document.addEventListener("DOMContentLoaded", () => {
       textElement.style.transition = "opacity 0.5s";
     }, 2000);
 
-    // Step 2: Recreate Section 2 state in Section 3 (after text fades)
+    // Step 2: Recreate Section 2 state in Section 3 using predefined positions
     setTimeout(() => {
-      // Clone and display all jeets - they are already at their final positions from Section 2
+      // Display all jeets using stored positions
       section2State.jeets.forEach((jeet, i) => {
         setTimeout(() => {
-          const jeetClone = jeet.element.cloneNode(true);
-          jeetClone.style.position = "absolute";
-          jeetClone.style.animation = "fadeInAnimation 0.3s ease-in forwards";
-          section3.appendChild(jeetClone);
-          // Update reference to section 3 clone (positions already stored)
-          jeet.element = jeetClone;
-        }, i * 10); // Fast stagger for sea effect
+          const jeetImg = document.createElement("img");
+          jeetImg.src = "img/Character - NPC.png";
+          jeetImg.className = "jeet-sea-character";
+          jeetImg.style.position = "absolute";
+          jeetImg.style.left = `${jeet.left}%`;
+          jeetImg.style.top = `${jeet.top}%`;
+          jeetImg.style.animation = "fadeInAnimation 0.3s ease-in forwards";
+          section3.appendChild(jeetImg);
+          jeet.element = jeetImg; // Update reference for missiles
+        }, i * 10);
       });
 
-      // Clone and display all landmines - they are already at their final positions from Section 2
-      section2State.landmines.forEach((landmine, i) => {
+      // Display landmines using predefined positions
+      section2Positions.landmines.forEach((position, i) => {
         setTimeout(
           () => {
-            const landmineClone = landmine.element.cloneNode(true);
-            landmineClone.style.position = "absolute";
-            landmineClone.style.animation =
+            const landmineImg = document.createElement("img");
+            landmineImg.src = "img/Aux - Landmine.png";
+            landmineImg.className = "landmine";
+            landmineImg.style.position = "absolute";
+            landmineImg.style.left = `${position.left}%`;
+            landmineImg.style.top = `${position.top}%`;
+            landmineImg.style.animation =
               "fadeInAnimation 0.3s ease-in forwards, landmineThrobbing 2s ease-in-out 0.3s infinite";
-            section3.appendChild(landmineClone);
+            section3.appendChild(landmineImg);
           },
           500 + i * 50,
         );
       });
 
-      // Clone and display tank - it is already at its final position from Section 2
-      if (section2State.tank) {
-        setTimeout(() => {
-          const tankClone = section2State.tank.element.cloneNode(true);
-          tankClone.style.position = "absolute";
-          tankClone.style.animation = "fadeInAnimation 0.5s ease-in forwards";
-          section3.appendChild(tankClone);
-        }, 800);
-      }
+      // Display tank using predefined position
+      setTimeout(() => {
+        const tankImg = document.createElement("img");
+        tankImg.src = "img/Aux - Tank.png";
+        tankImg.className = "tank-container";
+        tankImg.style.position = "absolute";
+        tankImg.style.left = `${section2Positions.tank.left}%`;
+        tankImg.style.top = `${section2Positions.tank.top}%`;
+        tankImg.style.animation = "fadeInAnimation 0.5s ease-in forwards";
+        section3.appendChild(tankImg);
+      }, 800);
 
-      // Clone and display resistance characters - they are already at their final positions from Section 2
-      section2State.resistanceCharacters.forEach((character, i) => {
+      // Display resistance characters using predefined positions
+      const resistanceImages = [
+        "img/Character - Catpop.png",
+        "img/Character - DogeWW1.png",
+        "img/Character - Dogwifhat.png",
+        "img/Character - Moodeng.png",
+        "img/Character - Pepe.png",
+        "img/Character - Wojak.png",
+        "img/Character - Soyjak.png",
+        "img/Character - Shiba.png",
+      ];
+
+      section2Positions.resistanceCharacters.forEach((position, i) => {
         setTimeout(
           () => {
-            const characterClone = character.element.cloneNode(true);
-            characterClone.style.position = "absolute";
-            characterClone.style.animation =
+            const characterImg = document.createElement("img");
+            characterImg.src = resistanceImages[i];
+            characterImg.className = "resistance-character";
+            characterImg.style.position = "absolute";
+            characterImg.style.left = `${position.left}%`;
+            characterImg.style.top = `${position.top}%`;
+
+            // Flip specific characters vertically
+            if (
+              resistanceImages[i].includes("Moodeng") ||
+              resistanceImages[i].includes("Wojak") ||
+              resistanceImages[i].includes("Soyjak")
+            ) {
+              characterImg.style.transform = "scaleY(-1)";
+            }
+
+            characterImg.style.animation =
               "fadeInAnimation 0.4s ease-in forwards";
-            section3.appendChild(characterClone);
+            section3.appendChild(characterImg);
           },
           1300 + i * 100,
         );
