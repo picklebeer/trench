@@ -436,9 +436,9 @@ cp -r ${WEB_ROOT}/* ${BACKUP_DIR}/
 echo "Backup created: ${BACKUP_DIR}"
 
 # Copy new files
-cp ${SOURCE_DIR}/index.html ${WEB_ROOT}/
-cp ${SOURCE_DIR}/style.css ${WEB_ROOT}/
-cp ${SOURCE_DIR}/script.js ${WEB_ROOT}/
+cp -f ${SOURCE_DIR}/index.html ${WEB_ROOT}/
+cp -f ${SOURCE_DIR}/style.css ${WEB_ROOT}/
+cp -f ${SOURCE_DIR}/script.js ${WEB_ROOT}/
 
 if [[ -d "${SOURCE_DIR}/img" ]]; then
     cp -r ${SOURCE_DIR}/img/* ${WEB_ROOT}/img/
