@@ -220,8 +220,8 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }, 4000);
 
-    // Spawn 30 Jeets over 2 seconds
-    const numJeets = 30;
+    // Spawn 100 Jeets over 2 seconds
+    const numJeets = 100;
     const spawnDuration = 2000; // 2 seconds
 
     for (let i = 0; i < numJeets; i++) {
