@@ -287,7 +287,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Step 3: Add tank and trigger entrance
     setTimeout(() => {
       const tank = document.createElement("img");
-      tank.src = "img/Character - Tank.png";
+      tank.src = "img/Aux - Tank.png";
       tank.alt = "Tank";
       tankContainer.appendChild(tank);
 
