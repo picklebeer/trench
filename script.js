@@ -207,13 +207,19 @@ document.addEventListener("DOMContentLoaded", () => {
       animationContainer.classList.add("active");
     }, 2500);
 
-    // Generate 15 red candles with varying heights
+    // Generate 15 red candles with exponential decay pattern (downward trend)
     const numCandles = 15;
     setTimeout(() => {
       for (let i = 0; i < numCandles; i++) {
         const candle = document.createElement("div");
         candle.className = "red-candle";
-        const height = Math.random() * 200 + 100; // Random height between 100-300px
+
+        // Exponential decay: tallest on left, shortest on right
+        const progress = i / (numCandles - 1); // 0 to 1
+        const baseHeight = 400 * Math.exp(-3 * progress); // Exponential decay
+        const variation = Math.random() * 30 - 15; // Small random variation
+        const height = Math.max(50, baseHeight + variation); // Minimum 50px
+
         candle.style.height = `${height}px`;
         candle.style.animationDelay = `${i * 0.1}s`;
         candlesContainer.appendChild(candle);
