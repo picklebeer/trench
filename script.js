@@ -469,84 +469,51 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Step 2: Recreate Section 2 state in Section 3 (after text fades)
     setTimeout(() => {
-      // Clone and display all jeets with actual computed positions
+      // Clone and display all jeets - they are already at their final positions from Section 2
       section2State.jeets.forEach((jeet, i) => {
         setTimeout(() => {
           const jeetClone = jeet.element.cloneNode(true);
           jeetClone.style.position = "absolute";
-          // Get computed position from original element
-          const computedLeft = jeet.element.style.left;
-          const computedTop = jeet.element.style.top;
-          jeetClone.style.left = computedLeft;
-          jeetClone.style.top = computedTop;
-          jeetClone.style.width = ""; // Let CSS handle responsive sizing
           jeetClone.style.animation = "fadeInAnimation 0.3s ease-in forwards";
           section3.appendChild(jeetClone);
-          // Update reference and position to section 3 clone
-          jeet.left = parseFloat(computedLeft);
-          jeet.top = parseFloat(computedTop);
+          // Update reference to section 3 clone (positions already stored)
           jeet.element = jeetClone;
         }, i * 10); // Fast stagger for sea effect
       });
 
-      // Clone and display all landmines with actual computed positions
+      // Clone and display all landmines - they are already at their final positions from Section 2
       section2State.landmines.forEach((landmine, i) => {
         setTimeout(
           () => {
             const landmineClone = landmine.element.cloneNode(true);
             landmineClone.style.position = "absolute";
-            const computedLeft = landmine.element.style.left;
-            const computedTop = landmine.element.style.top;
-            landmineClone.style.left = computedLeft;
-            landmineClone.style.top = computedTop;
-            landmineClone.style.width = ""; // Let CSS handle responsive sizing
             landmineClone.style.animation =
               "fadeInAnimation 0.3s ease-in forwards, landmineThrobbing 2s ease-in-out 0.3s infinite";
             section3.appendChild(landmineClone);
-            // Update position
-            landmine.left = parseFloat(computedLeft);
-            landmine.top = parseFloat(computedTop);
           },
           500 + i * 50,
         );
       });
 
-      // Clone and display tank with actual computed position
+      // Clone and display tank - it is already at its final position from Section 2
       if (section2State.tank) {
         setTimeout(() => {
           const tankClone = section2State.tank.element.cloneNode(true);
           tankClone.style.position = "absolute";
-          const computedLeft =
-            section2State.tank.element.style.left ||
-            `${section2State.tank.left}%`;
-          const computedTop =
-            section2State.tank.element.style.top ||
-            `${section2State.tank.top}%`;
-          tankClone.style.left = computedLeft;
-          tankClone.style.top = computedTop;
-          tankClone.style.width = ""; // Let CSS handle responsive sizing
           tankClone.style.animation = "fadeInAnimation 0.5s ease-in forwards";
           section3.appendChild(tankClone);
         }, 800);
       }
 
-      // Clone and display resistance characters with actual computed positions
+      // Clone and display resistance characters - they are already at their final positions from Section 2
       section2State.resistanceCharacters.forEach((character, i) => {
         setTimeout(
           () => {
             const characterClone = character.element.cloneNode(true);
             characterClone.style.position = "absolute";
-            const computedLeft = character.element.style.left;
-            const computedTop = character.element.style.top;
-            characterClone.style.left = computedLeft;
-            characterClone.style.top = computedTop;
-            characterClone.style.width = ""; // Let CSS handle responsive sizing
             characterClone.style.animation =
               "fadeInAnimation 0.4s ease-in forwards";
             section3.appendChild(characterClone);
-            // Update position for missile targeting
-            character.left = parseFloat(computedLeft);
-            character.top = parseFloat(computedTop);
           },
           1300 + i * 100,
         );
