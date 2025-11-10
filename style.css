@@ -940,7 +940,7 @@ body {
 }
 
 .red-candle::before {
-    content: '';
+    content: "";
     position: absolute;
     top: -20px;
     left: 50%;
@@ -1065,7 +1065,9 @@ body {
     width: 60px;
     height: auto;
     opacity: 0;
-    animation: landmineAppear 0.5s ease-out forwards, landmineThrobbing 2s ease-in-out 0.5s infinite;
+    animation:
+        landmineAppear 0.5s ease-out forwards,
+        landmineThrobbing 2s ease-in-out 0.5s infinite;
 }
 
 @keyframes landmineAppear {
@@ -1080,7 +1082,8 @@ body {
 }
 
 @keyframes landmineThrobbing {
-    0%, 100% {
+    0%,
+    100% {
         transform: scale(1);
         filter: brightness(1) drop-shadow(0 0 10px rgba(255, 50, 50, 0.5));
     }
@@ -1108,7 +1111,8 @@ body {
 }
 
 .resistance-character.spawn {
-    animation: resistanceSpawn 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    animation: resistanceSpawn 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+        forwards;
 }
 
 @keyframes resistanceSpawn {
@@ -1165,18 +1169,24 @@ body {
     height: 8px;
     background: radial-gradient(circle, #ff6600 0%, #ff3300 50%, #cc0000 100%);
     border-radius: 50%;
-    box-shadow: 0 0 15px rgba(255, 100, 0, 0.8), 0 0 30px rgba(255, 50, 0, 0.4);
+    box-shadow:
+        0 0 15px rgba(255, 100, 0, 0.8),
+        0 0 30px rgba(255, 50, 0, 0.4);
     pointer-events: none;
     z-index: 100;
     animation: missileFly 0.8s linear forwards;
 }
 
 .barrage-missile::after {
-    content: '';
+    content: "";
     position: absolute;
     width: 30px;
     height: 3px;
-    background: linear-gradient(90deg, rgba(255, 150, 0, 0.8) 0%, transparent 100%);
+    background: linear-gradient(
+        90deg,
+        rgba(255, 150, 0, 0.8) 0%,
+        transparent 100%
+    );
     filter: blur(2px);
     left: -25px;
     top: 50%;
@@ -1264,7 +1274,8 @@ body {
 }
 
 /* Responsive */
-@media (max-width: 768px) {
+/* Mobile Portrait Mode Adjustments */
+@media (max-width: 768px) and (orientation: portrait) {
     .mission-text h1 {
         font-size: 2rem;
     }
@@ -1286,7 +1297,6 @@ body {
         flex-direction: column;
         gap: 15px;
     }
-}
 
     .loading-percentage {
         font-size: 1.5rem;
@@ -1298,5 +1308,80 @@ body {
 
     .tagline {
         font-size: 1.2rem;
+    }
+
+    /* Section 1: Scale down jeet characters */
+    .jeet-character {
+        width: 50px !important;
+    }
+
+    .red-candle {
+        width: 25px !important;
+    }
+
+    /* Section 2: Adjust positioning for portrait */
+    .jeets-sea-container {
+        width: 30% !important;
+    }
+
+    .jeet-sea-character {
+        width: 40px !important;
+    }
+
+    .landmine {
+        width: 40px !important;
+    }
+
+    .tank-container img {
+        width: 300px !important;
+    }
+
+    .resistance-character {
+        width: 80px !important;
+    }
+
+    /* Adjust resistance character positions for portrait (tighter spacing) */
+    .resistance-character:nth-child(1) {
+        left: 10% !important;
+        top: 10% !important;
+    }
+    .resistance-character:nth-child(2) {
+        left: 25% !important;
+        top: 15% !important;
+    }
+    .resistance-character:nth-child(3) {
+        left: 40% !important;
+        top: 10% !important;
+    }
+    .resistance-character:nth-child(4) {
+        left: 55% !important;
+        top: 15% !important;
+    }
+    .resistance-character:nth-child(5) {
+        left: 10% !important;
+        top: 35% !important;
+    }
+    .resistance-character:nth-child(6) {
+        left: 25% !important;
+        top: 40% !important;
+    }
+    .resistance-character:nth-child(7) {
+        left: 40% !important;
+        top: 35% !important;
+    }
+    .resistance-character:nth-child(8) {
+        left: 55% !important;
+        top: 40% !important;
+    }
+
+    /* Section 3: Scale barrage missiles */
+    .barrage-missile {
+        width: 6px !important;
+        height: 6px !important;
+    }
+
+    .barrage-missile::after {
+        width: 20px !important;
+        left: -18px !important;
     }
 }
