@@ -371,6 +371,15 @@ document.addEventListener("DOMContentLoaded", () => {
       return true;
     }
 
+    // Helper function to check if character position overlaps with tank
+    function isPositionSafeFromTank(left, top, minDistance = 20) {
+      const distance = Math.sqrt(
+        Math.pow(left - tankPosition.left, 2) +
+          Math.pow(top - tankPosition.top, 2),
+      );
+      return distance >= minDistance;
+    }
+
     // Step 5: Spawn resistance characters
     const resistanceImages = [
       "img/Character - Catpop.png",
@@ -413,7 +422,8 @@ document.addEventListener("DOMContentLoaded", () => {
             attempts++;
           } while (
             (!isPositionSafe(left, top) ||
-              !isPositionSafeFromCharacters(left, top)) &&
+              !isPositionSafeFromCharacters(left, top) ||
+              !isPositionSafeFromTank(left, top)) &&
             attempts < 100
           );
 
