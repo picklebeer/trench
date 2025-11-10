@@ -881,7 +881,7 @@ body {
 }
 
 .section-1-text.fade-out {
-    animation: fadeOutText 2s ease-out forwards;
+    animation: fadeOutText 0.5s ease-out forwards;
 }
 
 @keyframes fadeOutText {
@@ -905,7 +905,7 @@ body {
 }
 
 .jeets-animation-container.active {
-    animation: fadeInAnimation 1s ease-in forwards;
+    animation: fadeInAnimation 0.5s ease-in forwards;
 }
 
 @keyframes fadeInAnimation {

@@ -202,10 +202,10 @@ document.addEventListener("DOMContentLoaded", () => {
       textElement.classList.add("fade-out");
     }, 2000);
 
-    // Step 2: Start animation container fade in
+    // Step 2: Start animation container fade in (after 0.5s fade out)
     setTimeout(() => {
       animationContainer.classList.add("active");
-    }, 4000);
+    }, 2500);
 
     // Generate 15 red candles with varying heights
     const numCandles = 15;
@@ -218,7 +218,7 @@ document.addEventListener("DOMContentLoaded", () => {
         candle.style.animationDelay = `${i * 0.1}s`;
         candlesContainer.appendChild(candle);
       }
-    }, 4000);
+    }, 2500);
 
     // Spawn 100 Jeets over 2 seconds
     const numJeets = 100;
@@ -245,8 +245,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
           jeetsContainer.appendChild(jeet);
         },
-        (i / numJeets) * spawnDuration + 4000,
-      ); // Start after 4s (after text fades)
+        (i / numJeets) * spawnDuration + 2500,
+      ); // Start after 2.5s (after text fades)
     }
   }
 
