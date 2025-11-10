@@ -299,7 +299,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Step 3: Place landmines first (avoiding tank area)
     const landminePositions = [];
     setTimeout(() => {
-      const numLandmines = 12;
+      const numLandmines = 6;
       for (let i = 0; i < numLandmines; i++) {
         const landmine = document.createElement("img");
         landmine.src = "img/Aux - Landmine.png";
