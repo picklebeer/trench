@@ -310,9 +310,9 @@ document.addEventListener("DOMContentLoaded", () => {
           top,
           attempts = 0;
         do {
-          // Scatter landmines across the middle and right portion of the screen
+          // Scatter landmines across the middle and right portion, concentrated toward bottom
           left = 30 + Math.random() * 60; // 30% to 90% from left
-          top = 20 + Math.random() * 60; // 20% to 80% from top
+          top = 50 + Math.random() * 40; // 50% to 90% from top (bottom half)
           attempts++;
         } while (isTooCloseToTank(left, top) && attempts < 50);
 
