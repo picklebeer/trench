@@ -1,57 +1,42 @@
+// Audio Toggle Functionality
+const backgroundMusic = document.getElementById("background-music");
+const audioToggleBtn = document.getElementById("audio-toggle");
+let isPlaying = false;
+
+if (audioToggleBtn && backgroundMusic) {
+  audioToggleBtn.addEventListener("click", () => {
+    const speakerOn = audioToggleBtn.querySelector(".speaker-on");
+    const speakerOff = audioToggleBtn.querySelector(".speaker-off");
+
+    if (isPlaying) {
+      // Pause audio
+      backgroundMusic.pause();
+      speakerOn.style.display = "block";
+      speakerOff.style.display = "none";
+      isPlaying = false;
+    } else {
+      // Play audio
+      backgroundMusic.muted = false;
+      backgroundMusic.volume = 0.3;
+      backgroundMusic
+        .play()
+        .then(() => {
+          speakerOn.style.display = "none";
+          speakerOff.style.display = "block";
+          isPlaying = true;
+        })
+        .catch((error) => {
+          console.error("Audio play failed:", error);
+        });
+    }
+  });
+}
+
 // Mission Loading Animation
 document.addEventListener("DOMContentLoaded", () => {
   const loadingScreen = document.getElementById("loading-screen");
   const mainContent = document.getElementById("main-content");
   const loadingPercentage = document.querySelector(".loading-percentage");
-  const backgroundMusic = document.getElementById("background-music");
-
-  // Attempt to play background music on user interaction
-  let musicStarted = false;
-
-  const playMusic = () => {
-    if (backgroundMusic && !musicStarted) {
-      backgroundMusic.volume = 0.3; // Set volume to 30%
-      backgroundMusic
-        .play()
-        .then(() => {
-          musicStarted = true;
-          // Remove event listeners once music starts
-          document.removeEventListener("click", enableAudioOnInteraction);
-          document.removeEventListener("keydown", enableAudioOnInteraction);
-          document.removeEventListener("touchstart", enableAudioOnInteraction);
-        })
-        .catch(() => {
-          // Silently fail - music will play on user interaction
-        });
-    }
-  };
-
-  // If autoplay is blocked, play on first user interaction
-  const enableAudioOnInteraction = () => {
-    playMusic();
-  };
-
-  // Try to play music after a short delay (attempt to bypass autoplay restrictions)
-  setTimeout(() => {
-    playMusic();
-  }, 100);
-
-  // Set up listeners for user interaction
-  document.addEventListener("click", enableAudioOnInteraction, { once: false });
-  document.addEventListener("keydown", enableAudioOnInteraction, {
-    once: false,
-  });
-  document.addEventListener("touchstart", enableAudioOnInteraction, {
-    once: false,
-  });
-  document.addEventListener("scroll", enableAudioOnInteraction, {
-    once: false,
-  });
-  document.addEventListener("wheel", enableAudioOnInteraction, { once: false });
-  document.addEventListener("drag", enableAudioOnInteraction, { once: false });
-  document.addEventListener("mousemove", enableAudioOnInteraction, {
-    once: false,
-  });
 
   // Check if elements exist
   if (!loadingPercentage) {
@@ -501,11 +486,22 @@ document.addEventListener("DOMContentLoaded", () => {
   function startSection3Animation() {
     const section3 = document.getElementById("scroll-section-3");
     const textBox = section3.querySelector(".section-text-box");
+    const animationContainer = section3.querySelector(
+      ".section3-animation-container",
+    );
+    const tankContainer = animationContainer.querySelector(".tank-container");
 
     // Clear previous animation - remove all dynamically added elements
-    const existingElements = section3.querySelectorAll("img, .barrage-missile");
+    tankContainer.innerHTML = "";
+    const existingElements = animationContainer.querySelectorAll(
+      "img, .barrage-missile",
+    );
     existingElements.forEach((el) => el.remove());
     textBox.classList.remove("show");
+    animationContainer.classList.remove("active");
+
+    // Clear section2State to rebuild with Section 3's structure
+    section2State.resistanceCharacters = [];
 
     // Detect mobile portrait mode
     const isMobilePortrait = window.matchMedia(
@@ -528,6 +524,9 @@ document.addEventListener("DOMContentLoaded", () => {
     // Show text box immediately
     textBox.classList.add("show");
 
+    // Start animation container
+    animationContainer.classList.add("active");
+
     // Recreate Section 2 state in Section 3 using predefined positions - all appear at once
     setTimeout(() => {
       // Display all jeets at once
@@ -541,7 +540,7 @@ document.addEventListener("DOMContentLoaded", () => {
         jeetImg.style.width = "60px";
         jeetImg.style.opacity = "0";
         jeetImg.style.animation = "fadeInAnimation 0.5s ease-in forwards";
-        section3.appendChild(jeetImg);
+        animationContainer.appendChild(jeetImg);
         jeet.element = jeetImg; // Update reference for missiles
       });
 
@@ -557,21 +556,19 @@ document.addEventListener("DOMContentLoaded", () => {
         landmineImg.style.opacity = "0";
         landmineImg.style.animation =
           "fadeInAnimation 0.5s ease-in forwards, landmineThrobbing 2s ease-in-out 0.5s infinite";
-        section3.appendChild(landmineImg);
+        animationContainer.appendChild(landmineImg);
       });
 
-      // Display tank
+      // Display tank - use the existing tank-container from HTML (same as Section 2)
       const tankImg = document.createElement("img");
       tankImg.src = "img/Aux - Tank.png";
-      tankImg.style.position = "absolute";
-      tankImg.style.left = `${section2Positions.tank.left}%`;
-      tankImg.style.top = `${section2Positions.tank.top}%`;
-      tankImg.style.width = "540px";
-      tankImg.style.transform = "translateY(-50%)";
-      tankImg.style.filter = "drop-shadow(0 0 20px rgba(74, 124, 58, 0.6))";
-      tankImg.style.opacity = "0";
-      tankImg.style.animation = "fadeInAnimation 0.5s ease-in forwards";
-      section3.appendChild(tankImg);
+      tankImg.alt = "Tank";
+      tankContainer.appendChild(tankImg);
+
+      // Trigger tank entrance animation (same as Section 2)
+      setTimeout(() => {
+        tankContainer.classList.add("enter");
+      }, 50);
 
       // Display all resistance characters at once
       const resistanceImages = [
@@ -597,7 +594,7 @@ document.addEventListener("DOMContentLoaded", () => {
         characterImg.style.filter =
           "drop-shadow(0 0 10px rgba(107, 168, 58, 0.5))";
         characterImg.style.animation = "fadeInAnimation 0.5s ease-in forwards";
-        section3.appendChild(characterImg);
+        animationContainer.appendChild(characterImg);
 
         // Update section2State with the position being used (for missile targeting)
         section2State.resistanceCharacters[i] = {
@@ -649,7 +646,7 @@ document.addEventListener("DOMContentLoaded", () => {
               missile.style.setProperty("--target-y", `${deltaY}vh`);
               missile.style.setProperty("--rotation", `${angle}deg`);
 
-              section3.appendChild(missile);
+              animationContainer.appendChild(missile);
 
               // Remove missile and jeet after impact
               setTimeout(() => {

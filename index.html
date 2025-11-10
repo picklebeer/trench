@@ -6,8 +6,8 @@
         <title>$TRENCH</title>
 
         <!-- Favicon -->
-        <link rel="icon" type="image/x-icon" href="favicon.ico" />
-        <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+        <link rel="icon" type="image/x-icon" href="img/favicon.ico" />
+        <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico" />
 
         <!-- HTML Meta Tags -->
         <meta
@@ -47,8 +47,8 @@
     </head>
     <body>
         <!-- Background Music -->
-        <audio id="background-music" loop>
-            <source src="audio/GimmeShelter.mp3" type="audio/mpeg" />
+        <audio id="background-music" loop autoplay>
+            <source src="audio/GimmeShelter.mp3" type="audio/mp3" />
             Your browser does not support the audio element.
         </audio>
 
@@ -100,6 +100,33 @@
         <div id="main-content" class="main-content hidden">
             <!-- Hero Section with Warfield -->
             <section id="hero" class="hero-section">
+                <!-- Top Right Buttons -->
+                <div class="top-right-buttons">
+                    <a
+                        href="https://pump.fun"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="icon-button"
+                    >
+                        <span class="dollar-icon">$</span>
+                    </a>
+                    <a
+                        href="https://x.com/i/communities/1987968010938966302"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="icon-button"
+                    >
+                        <svg
+                            class="twitter-icon"
+                            viewBox="0 0 24 24"
+                            fill="currentColor"
+                        >
+                            <path
+                                d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"
+                            />
+                        </svg>
+                    </a>
+                </div>
                 <div class="warfield-background"></div>
                 <div class="hero-overlay"></div>
                 <div class="hero-content">
@@ -124,6 +151,33 @@
                         HOLD THE LINE. DEFEND THE TRENCHES.
                     </h2>
                 </div>
+
+                <!-- Audio Control Button -->
+                <button
+                    id="audio-toggle"
+                    class="audio-toggle"
+                    aria-label="Toggle audio"
+                >
+                    <svg
+                        class="speaker-icon speaker-on"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                    >
+                        <path
+                            d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"
+                        />
+                    </svg>
+                    <svg
+                        class="speaker-icon speaker-off"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        style="display: none"
+                    >
+                        <path
+                            d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"
+                        />
+                    </svg>
+                </button>
             </section>
 
             <!-- Section 1: The Jeets have been multiplying -->
@@ -175,6 +229,12 @@
                     <h2>ANNIHILATE THE JEET ARMY</h2>
                     <p>Victory requires unwavering conviction</p>
                 </div>
+                <!-- Animation Container (same structure as Section 2) -->
+                <div class="section3-animation-container">
+                    <!-- Tank -->
+                    <div class="tank-container"></div>
+                    <!-- Content will be populated by JavaScript -->
+                </div>
             </section>
 
             <!-- Section 4: There is only one way -->
@@ -199,8 +259,13 @@
                         Join the resistance. Hold the line.
                     </p>
                     <div class="cta-container">
-                        <button class="cta-button">BUY NOW</button>
-                        <button class="cta-button secondary">LEARN MORE</button>
+                        <a
+                            href="https://pump.fun"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="cta-button"
+                            >BUY NOW</a
+                        >
                     </div>
                 </div>
             </section>
