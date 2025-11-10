@@ -392,6 +392,18 @@ document.addEventListener("DOMContentLoaded", () => {
       "img/Character - Shiba.png",
     ];
 
+    // Fixed positions for resistance characters (2 columns x 4 rows on left side)
+    const fixedPositions = [
+      { left: 20, top: 20 }, // Catpop
+      { left: 35, top: 20 }, // DogeWW1
+      { left: 20, top: 40 }, // Dogwifhat
+      { left: 35, top: 40 }, // Moodeng
+      { left: 20, top: 60 }, // Pepe
+      { left: 35, top: 60 }, // Wojak
+      { left: 20, top: 80 }, // Soyjak
+      { left: 35, top: 80 }, // Shiba
+    ];
+
     // Spawn each character individually with delay between them
     resistanceImages.forEach((imgSrc, i) => {
       setTimeout(
@@ -409,29 +421,10 @@ document.addEventListener("DOMContentLoaded", () => {
             character.style.transform = "scaleY(-1)";
           }
 
-          // Position characters randomly all over the screen, avoiding landmines and other characters
-          // Try to find a safe position
-          let left,
-            top,
-            attempts = 0;
-          do {
-            // Concentrate characters on the left side
-            left = 15 + Math.random() * 35; // 15% to 50% from left
-            top = 15 + Math.random() * 70; // 15% to 85% from top
-
-            attempts++;
-          } while (
-            (!isPositionSafe(left, top) ||
-              !isPositionSafeFromCharacters(left, top) ||
-              !isPositionSafeFromTank(left, top)) &&
-            attempts < 100
-          );
-
-          character.style.left = `${left}%`;
-          character.style.top = `${top}%`;
-
-          // Store this character's position
-          characterPositions.push({ left, top });
+          // Use fixed position for this character
+          const position = fixedPositions[i];
+          character.style.left = `${position.left}%`;
+          character.style.top = `${position.top}%`;
 
           resistanceContainer.appendChild(character);
 
