@@ -211,19 +211,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const numCandles = 15;
     setTimeout(() => {
       for (let i = 0; i < numCandles; i++) {
-        setTimeout(() => {
-          const candle = document.createElement("div");
-          candle.className = "red-candle";
+        const candle = document.createElement("div");
+        candle.className = "red-candle";
 
-          // Exponential decay: tallest on left, shortest on right
-          const progress = i / (numCandles - 1); // 0 to 1
-          const baseHeight = 400 * Math.exp(-3 * progress); // Exponential decay
-          const variation = Math.random() * 30 - 15; // Small random variation
-          const height = Math.max(50, baseHeight + variation); // Minimum 50px
+        // Exponential decay: tallest on left, shortest on right
+        const progress = i / (numCandles - 1); // 0 to 1
+        const baseHeight = 400 * Math.exp(-3 * progress); // Exponential decay
+        const variation = Math.random() * 30 - 15; // Small random variation
+        const height = Math.max(50, baseHeight + variation); // Minimum 50px
 
-          candle.style.height = `${height}px`;
-          candlesContainer.appendChild(candle);
-        }, i * 100); // 100ms delay between each candle
+        candle.style.height = `${height}px`;
+        candle.style.animationDelay = `${i * 0.1}s`;
+        candlesContainer.appendChild(candle);
       }
     }, 2500);
 
