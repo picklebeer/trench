@@ -340,22 +340,25 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }, 2500);
 
-    // Step 4: Place landmines at fixed positions (after jeets sea completes)
-    setTimeout(() => {
-      landmineFixedPositions.forEach((position, i) => {
-        const landmine = document.createElement("img");
-        landmine.src = "img/Aux - Landmine.png";
-        landmine.className = "landmine";
+    // Step 4: Place landmines at fixed positions one by one (after jeets sea completes)
+    landmineFixedPositions.forEach((position, i) => {
+      setTimeout(
+        () => {
+          const landmine = document.createElement("img");
+          landmine.src = "img/Aux - Landmine.png";
+          landmine.className = "landmine";
 
-        landmine.style.left = `${position.left}%`;
-        landmine.style.top = `${position.top}%`;
+          landmine.style.left = `${position.left}%`;
+          landmine.style.top = `${position.top}%`;
 
-        // Randomize animation delay for varied throbbing
-        landmine.style.animationDelay = `${Math.random() * 2}s`;
+          // Randomize animation delay for varied throbbing
+          landmine.style.animationDelay = `${Math.random() * 2}s`;
 
-        landminesContainer.appendChild(landmine);
-      });
-    }, 3800); // After jeets sea (2.5s + 1.3s)
+          landminesContainer.appendChild(landmine);
+        },
+        3800 + i * 200,
+      ); // After jeets sea (2.5s + 1.3s), 200ms delay between each landmine
+    });
 
     // Step 5: Add tank and trigger entrance (after landmines appear)
     setTimeout(() => {
