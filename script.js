@@ -355,6 +355,22 @@ document.addEventListener("DOMContentLoaded", () => {
       return true;
     }
 
+    // Track character positions to prevent overlapping
+    const characterPositions = [];
+
+    // Helper function to check if position overlaps with other characters
+    function isPositionSafeFromCharacters(left, top, minDistance = 18) {
+      for (const char of characterPositions) {
+        const distance = Math.sqrt(
+          Math.pow(left - char.left, 2) + Math.pow(top - char.top, 2),
+        );
+        if (distance < minDistance) {
+          return false;
+        }
+      }
+      return true;
+    }
+
     // Step 5: Spawn resistance characters
     const resistanceImages = [
       "img/Character - Catpop.png",
@@ -384,21 +400,28 @@ document.addEventListener("DOMContentLoaded", () => {
             character.style.transform = "scaleY(-1)";
           }
 
-          // Position characters randomly all over the screen, avoiding landmines
+          // Position characters randomly all over the screen, avoiding landmines and other characters
           // Try to find a safe position
           let left,
             top,
             attempts = 0;
           do {
-            // Spread characters across the entire screen
-            left = 20 + Math.random() * 70; // 20% to 90% from left
+            // Concentrate characters on the left side
+            left = 15 + Math.random() * 35; // 15% to 50% from left
             top = 15 + Math.random() * 70; // 15% to 85% from top
 
             attempts++;
-          } while (!isPositionSafe(left, top) && attempts < 50);
+          } while (
+            (!isPositionSafe(left, top) ||
+              !isPositionSafeFromCharacters(left, top)) &&
+            attempts < 100
+          );
 
           character.style.left = `${left}%`;
           character.style.top = `${top}%`;
+
+          // Store this character's position
+          characterPositions.push({ left, top });
 
           resistanceContainer.appendChild(character);
 
